@@ -1,0 +1,24 @@
+<?xml version="1.0"?> 
+<project name="owlapibundle" default="all">
+
+  <property name="jar"     value="org.protege.services.owlapi.jar"/>
+
+
+  <target name="init"> 
+    <echo message="---------------Building OWLAPI Bundle-------------"/>
+  </target>
+
+  <target name="bundle">
+    <jar jarfile  = "${dist.dir}/bundles/${jar}" 
+         update   = "true"
+         compress = "true" 
+         manifest = "${owlapi.dir}/META-INF/MANIFEST.MF">
+        <fileset dir="${owl.dir}/lib">
+             <include name="owlapi-*.jar"/>
+             <include name="commons-lang-2.2.jar"/>
+             <include name="log4j.jar"/>
+        </fileset>
+    </jar>
+  </target> 
+
+</project>
