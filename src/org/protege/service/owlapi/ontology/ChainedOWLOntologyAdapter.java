@@ -63,6 +63,10 @@ import org.semanticweb.owl.model.SWRLRule;
 import org.semanticweb.owl.model.UnknownOWLOntologyException;
 
 public class ChainedOWLOntologyAdapter extends ChainedOWLOntology {
+    
+    public ChainedOWLOntologyAdapter(OWLOntology delegate) {
+        super(delegate);
+    }
 
 	public boolean containsAxiom(OWLAxiom ax) {
 		return getDelegate().containsAxiom(ax);
@@ -97,7 +101,7 @@ public class ChainedOWLOntologyAdapter extends ChainedOWLOntology {
 	}
 
 	public Set<OWLAnnotationAxiom> getAnnotationAxioms() {
-
+	    return getDelegate().getAnnotationAxioms();
 	}
 
 	public Set<URI> getAnnotationURIs() {
