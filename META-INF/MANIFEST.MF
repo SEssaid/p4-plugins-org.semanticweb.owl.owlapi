@@ -5,24 +5,7 @@ Bundle-Version: 1.0.0
 Bundle-Description: The OwlAPI library as a bundle
 Bundle-Vendor: Protege Development Team
 Bundle-Category: owlapi
-Bundle-ClassPath: commons-lang-2.2.jar,
- log4j.jar,
- owlapi-apibinding.jar,
- owlapi-api.jar,
- owlapi-debugging.jar,
- owlapi-dig1_1.jar,
- owlapi-functionalparser.jar,
- owlapi-functionalrenderer.jar,
- owlapi-impl.jar,
- owlapi-krssparser.jar,
- owlapi-oboparser.jar,
- owlapi-owlxmlparser.jar,
- owlapi-owlxmlrenderer.jar,
- owlapi-rdfapi.jar,
- owlapi-rdfxmlparser.jar,
- owlapi-rdfxmlrenderer.jar,
- owlapi-util.jar,
- .
+Bundle-ClassPath: .
 Import-Package: org.osgi.framework,
  javax.servlet,
  javax.servlet.http,

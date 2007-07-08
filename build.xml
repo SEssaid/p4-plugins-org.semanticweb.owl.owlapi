@@ -6,36 +6,57 @@
 
   <path id="project.classpath">
   	<path refid="osgi.libs"/>
-  	<fileset refid="owl.libs"/>
-  	<fileset refid="owlapi.libs"/>
+        <fileset dir="${owlapi.dir}/lib"/>
   </path>
 	
   <target name="init"> 
     <echo message="---------------Building OWLAPI Bundle-------------"/>
-  	<mkdir dir="${classes.owlapi}"/>
+  	<mkdir dir="${owlapi.classes}"/>
   </target>
 	
   <target name="compile" depends="init">
-  	<javac srcdir="${src}" destdir="${classes.owlapi}"
+  	<javac srcdir="${src}" destdir="${owlapi.classes}"
   		   debug="${debug}" includeAntRuntime = "${includeAntRuntime}">
   		<classpath refid="project.classpath"/>
   	</javac>
   </target>
 
   <target name="bundle" depends="compile">
-  	<jar jarfile  = "${dist.dir}/bundles/${jar}">
-  		<fileset dir="${classes.owlapi}"/>
-    </jar>	
-    <jar jarfile  = "${dist.dir}/bundles/${jar}" 
-         update   = "true"
-         compress = "true" 
-         manifest = "${owlapi.dir}/META-INF/MANIFEST.MF">
-        <fileset dir="${owl.dir}/lib">
-             <include name="owlapi-*.jar"/>
-             <include name="commons-lang-2.2.jar"/>
-             <include name="log4j.jar"/>
-        </fileset>
-    </jar>
+    <unjar src = "${owlapi.dir}/lib/commons-lang-2.2.jar" 
+           dest="${owlapi.classes}"/>
+    <unjar src = "${owlapi.dir}/lib/owlapi-krssparser.jar"
+           dest="${owlapi.classes}"/>
+    <unjar src = "${owlapi.dir}/lib/owlapi-oboparser.jar"
+           dest="${owlapi.classes}"/>
+    <unjar src = "${owlapi.dir}/lib/owlapi-api.jar"
+           dest="${owlapi.classes}"/>
+    <unjar src = "${owlapi.dir}/lib/owlapi-owlxmlparser.jar"
+           dest="${owlapi.classes}"/>
+    <unjar src = "${owlapi.dir}/lib/owlapi-apibinding.jar"
+           dest="${owlapi.classes}"/>
+    <unjar src = "${owlapi.dir}/lib/owlapi-owlxmlrenderer.jar"
+           dest="${owlapi.classes}"/>
+    <unjar src = "${owlapi.dir}/lib/owlapi-debugging.jar"
+           dest="${owlapi.classes}"/>
+    <unjar src = "${owlapi.dir}/lib/owlapi-rdfapi.jar"
+           dest="${owlapi.classes}"/>
+    <unjar src = "${owlapi.dir}/lib/owlapi-dig1_1.jar"
+           dest="${owlapi.classes}"/>
+    <unjar src = "${owlapi.dir}/lib/owlapi-rdfxmlparser.jar"
+           dest="${owlapi.classes}"/>
+    <unjar src = "${owlapi.dir}/lib/owlapi-functionalparser.jar"
+           dest="${owlapi.classes}"/>
+    <unjar src = "${owlapi.dir}/lib/owlapi-rdfxmlrenderer.jar"
+           dest="${owlapi.classes}"/>
+    <unjar src = "${owlapi.dir}/lib/owlapi-functionalrenderer.jar"
+           dest="${owlapi.classes}"/>
+    <unjar src = "${owlapi.dir}/lib/owlapi-util.jar"
+           dest="${owlapi.classes}"/>
+    <unjar src = "${owlapi.dir}/lib/owlapi-impl.jar"
+           dest="${owlapi.classes}"/>
+    <jar basedir = "${owlapi.classes}"
+         jarfile  = "${owlapi.jar}"
+         manifest = "${owlapi.dir}/META-INF/MANIFEST.MF"/>
   </target> 
 
 </project>
