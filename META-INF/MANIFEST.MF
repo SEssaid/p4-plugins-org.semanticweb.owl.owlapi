@@ -1,16 +1,12 @@
 Manifest-Version: 1.0
 Bundle-Name: owlapi
-Bundle-SymbolicName: org.protege.services.owlapi
+Bundle-SymbolicName: owlapi
 Bundle-Version: 1.0.0
 Bundle-Description: The OwlAPI library as a bundle
 Bundle-Vendor: Protege Development Team
 Bundle-Category: owlapi
 Bundle-ClassPath: .
-Import-Package: org.osgi.framework,
- javax.servlet,
- javax.servlet.http,
- org.osgi.service.log,
- org.osgi.service.http
+Import-Package: org.osgi.framework
 Export-Package: edu.unika.aifb.rdf.api.syntax,
  edu.unika.aifb.rdf.api.util,
  org.coode.obo.parser,
@@ -33,4 +29,4 @@ Export-Package: edu.unika.aifb.rdf.api.syntax,
  org.semanticweb.owl.vocab,
  uk.ac.manchester.cs.owl,
  uk.ac.manchester.cs.owl.inference.dig11
-Bundle-Activator: org.protege.service.owlapi.Activator
+

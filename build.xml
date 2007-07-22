@@ -2,7 +2,6 @@
 <project name="owlapibundle" default="bundle" basedir="..">
 
   <property name="src" location="${owlapi.dir}/src"/>
-  <property name="jar"     value="org.protege.services.owlapi.jar"/>
 
   <path id="project.classpath">
   	<path refid="osgi.libs"/>
@@ -13,15 +12,17 @@
     <echo message="---------------Building OWLAPI Bundle-------------"/>
   	<mkdir dir="${owlapi.classes}"/>
   </target>
-	
+
+  <!--
   <target name="compile" depends="init">
   	<javac srcdir="${src}" destdir="${owlapi.classes}"
   		   debug="${debug}" includeAntRuntime = "${includeAntRuntime}">
   		<classpath refid="project.classpath"/>
   	</javac>
   </target>
+  -->
 
-  <target name="bundle" depends="compile">
+  <target name="bundle">
     <unjar src = "${owlapi.dir}/lib/commons-lang-2.2.jar" 
            dest="${owlapi.classes}"/>
     <unjar src = "${owlapi.dir}/lib/owlapi-krssparser.jar"
