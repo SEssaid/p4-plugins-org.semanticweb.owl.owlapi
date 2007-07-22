@@ -22,7 +22,46 @@
   </target>
   -->
 
-  <target name="bundle">
+  <target name="uptodate">
+      <condition property="owlapi.uptodate">
+          <and>
+              <uptodate srcfile="${owlapi.dir}/lib/commons-lang-2.2.jar" 
+                        targetfile="${owlapi.jar}"/>
+              <uptodate srcfile="${owlapi.dir}/lib/owlapi-krssparser.jar"
+                        targetfile="${owlapi.jar}"/>
+              <uptodate srcfile="${owlapi.dir}/lib/owlapi-oboparser.jar"
+                        targetfile="${owlapi.jar}"/>
+              <uptodate srcfile="${owlapi.dir}/lib/owlapi-api.jar"
+                        targetfile="${owlapi.jar}"/>
+              <uptodate srcfile="${owlapi.dir}/lib/owlapi-owlxmlparser.jar"
+                        targetfile="${owlapi.jar}"/>
+              <uptodate srcfile="${owlapi.dir}/lib/owlapi-apibinding.jar"
+                        targetfile="${owlapi.jar}"/>
+              <uptodate srcfile="${owlapi.dir}/lib/owlapi-owlxmlrenderer.jar"
+                        targetfile="${owlapi.jar}"/>
+              <uptodate srcfile="${owlapi.dir}/lib/owlapi-debugging.jar"
+                        targetfile="${owlapi.jar}"/>
+              <uptodate srcfile="${owlapi.dir}/lib/owlapi-rdfapi.jar"
+                        targetfile="${owlapi.jar}"/>
+              <uptodate srcfile="${owlapi.dir}/lib/owlapi-dig1_1.jar"
+                        targetfile="${owlapi.jar}"/>
+              <uptodate srcfile="${owlapi.dir}/lib/owlapi-rdfxmlparser.jar"
+                        targetfile="${owlapi.jar}"/>
+              <uptodate srcfile="${owlapi.dir}/lib/owlapi-functionalparser.jar"
+                        targetfile="${owlapi.jar}"/>
+              <uptodate srcfile="${owlapi.dir}/lib/owlapi-rdfxmlrenderer.jar"
+                        targetfile="${owlapi.jar}"/>
+              <uptodate srcfile="${owlapi.dir}/lib/owlapi-functionalrenderer.jar"
+                        targetfile="${owlapi.jar}"/>
+              <uptodate srcfile="${owlapi.dir}/lib/owlapi-util.jar"
+                        targetfile="${owlapi.jar}"/>
+              <uptodate srcfile="${owlapi.dir}/lib/owlapi-impl.jar"
+                        targetfile="${owlapi.jar}"/>
+          </and>
+      </condition>
+  </target>
+  
+  <target name="bundle" depends="uptodate" unless="owlapi.uptodate">
     <unjar src = "${owlapi.dir}/lib/commons-lang-2.2.jar" 
            dest="${owlapi.classes}"/>
     <unjar src = "${owlapi.dir}/lib/owlapi-krssparser.jar"
