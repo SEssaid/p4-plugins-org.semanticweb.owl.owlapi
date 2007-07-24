@@ -1,5 +1,15 @@
 <?xml version="1.0"?> 
-<project name="owlapibundle" default="bundle" basedir="..">
+<project name="owlapibundle" default="bundle" basedir=".">
+
+  <!-- default values of the properties to allow this to run standalone -->
+  <!-- these values will be ignored as part of a bigger build           -->
+
+  <property name = "build"          location = "./build"/>
+  <property name = "owlapi.name"    value    = "owlapi"/>
+  <property name = "owlapi.dir"     location = "."/>
+  <property name = "owlapi.classes" location = "${build}/classes"/>
+  <property name = "owlapi.jar"     location = "${build}/owlapi-bundle.jar"/>
+
 
   <property name="src" location="${owlapi.dir}/src"/>
 
@@ -99,4 +109,9 @@
          manifest = "${owlapi.dir}/META-INF/MANIFEST.MF"/>
   </target> 
 
+  <!-- this target is to be used in the case where this is 
+       not part of a bigger build                          -->
+  <target name="clean">
+      <delete dir="${build}"/>
+  </target>
 </project>
