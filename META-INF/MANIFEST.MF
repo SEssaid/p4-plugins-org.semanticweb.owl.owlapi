@@ -1,6 +1,7 @@
 Manifest-Version: 1.0
 Bundle-Name: owlapi
 Bundle-SymbolicName: owlapi
+Bundle-DocURL: http://owlapi.sourceforge.net
 Bundle-Version: 1.0.0
 Bundle-Description: The OwlAPI library as a bundle
 Bundle-Vendor: Protege Development Team
