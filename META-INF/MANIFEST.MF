@@ -1,11 +1,9 @@
 Manifest-Version: 1.0
-Bundle-Name: owlapi
-Bundle-SymbolicName: owlapi
+Bundle-Name: The OWL API
+Bundle-SymbolicName: org.semanticweb.owl.owlapi
 Bundle-DocURL: http://owlapi.sourceforge.net
 Bundle-Version: 1.0.0
 Bundle-Description: The OwlAPI library as a bundle
-Bundle-Vendor: Protege Development Team
-Bundle-Category: owlapi
 Bundle-ClassPath: .
 Import-Package: org.osgi.framework
 Export-Package: edu.unika.aifb.rdf.api.syntax,
