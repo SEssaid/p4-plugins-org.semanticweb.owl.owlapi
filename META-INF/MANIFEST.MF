@@ -2,12 +2,13 @@ Manifest-Version: 1.0
 Bundle-Name: The OWL API
 Bundle-SymbolicName: org.semanticweb.owl.owlapi
 Bundle-DocURL: http://owlapi.sourceforge.net
-Bundle-Version: 1.0.0
+Bundle-Version: 2.1.1
 Bundle-Description: The OwlAPI library as a bundle
-Bundle-ClassPath: .
+Bundle-ClassPath: .,lib/antlr-runtime-3.0.jar
 Import-Package: org.osgi.framework
 Export-Package: edu.unika.aifb.rdf.api.syntax,
  edu.unika.aifb.rdf.api.util,
+ org/coode/manchesterowlsyntax,
  org.coode.obo.parser,
  org.coode.owl.functionalparser,
  org.coode.owl.functionalrenderer,
@@ -23,9 +24,11 @@ Export-Package: edu.unika.aifb.rdf.api.syntax,
  org.semanticweb.owl.debugging,
  org.semanticweb.owl.inference,
  org.semanticweb.owl.io,
+ org.semanticweb.owl.metrics,
  org.semanticweb.owl.model,
  org.semanticweb.owl.util,
  org.semanticweb.owl.vocab,
  uk.ac.manchester.cs.owl,
+ uk.ac.manchester.cs.owl.mansyntaxrenderer,
  uk.ac.manchester.cs.owl.inference.dig11
 
