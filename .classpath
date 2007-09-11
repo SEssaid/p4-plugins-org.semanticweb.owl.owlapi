@@ -24,6 +24,5 @@
 	<classpathentry kind="lib" path="lib/owlapi-rdfxmlrenderer.jar"/>
 	<classpathentry kind="lib" path="lib/owlapi-util.jar"/>
 	<classpathentry kind="lib" path="lib/servlet-api.jar"/>
-	<classpathentry kind="lib" path="/home/tredmond/dev/workspaces/protege4e/owleditor/osgi-libs/equinox/org.eclipse.equinox.log_1.0.100.v20070226.jar"/>
 	<classpathentry kind="output" path="classes"/>
 </classpath>
