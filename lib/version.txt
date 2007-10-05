@@ -1,3 +1,2 @@
-The OWL API jars correspond to release 2.1.1 (see OWL API release-2.1.1 tag)
-
-https://owlapi.svn.sourceforge.net/svnroot/owlapi/owl1_1/tags
+The OWL API jars correspond to revision 454 of the owlapi.  This will
+be replaced with new upcoming point release shortly (2.1.2?).
