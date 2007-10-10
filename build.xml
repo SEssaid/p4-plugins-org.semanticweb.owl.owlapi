@@ -20,19 +20,9 @@
 	
   <target name="init"> 
     <echo message="---------------Building OWLAPI Bundle-------------"/>
-  	<mkdir dir="${owlapi.classes}"/>
   </target>
 
-  <!--
-  <target name="compile" depends="init">
-  	<javac srcdir="${src}" destdir="${owlapi.classes}"
-  		   debug="${debug}" includeAntRuntime = "${includeAntRuntime}">
-  		<classpath refid="project.classpath"/>
-  	</javac>
-  </target>
-  -->
-
-  <target name="uptodate">
+  <target name="uptodate" depends="init">
       <condition property="owlapi.uptodate">
           <and>
               <uptodate srcfile="${owlapi.dir}/lib/commons-lang-2.2.jar" 
