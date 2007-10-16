@@ -22,96 +22,17 @@
     <echo message="---------------Building OWLAPI Bundle-------------"/>
   </target>
 
-  <target name="uptodate" depends="init">
-      <condition property="owlapi.uptodate">
-          <and>
-              <uptodate srcfile="${owlapi.dir}/lib/commons-lang-2.2.jar" 
-                        targetfile="${owlapi.jar}"/>
-              <uptodate srcfile="${owlapi.dir}/lib/owlapi-api.jar"
-                        targetfile="${owlapi.jar}"/>
-              <uptodate srcfile="${owlapi.dir}/lib/owlapi-apibinding.jar"
-                        targetfile="${owlapi.jar}"/>
-              <uptodate srcfile="${owlapi.dir}/lib/owlapi-change.jar"
-                        targetfile="${owlapi.jar}"/>
-              <uptodate srcfile="${owlapi.dir}/lib/owlapi-debugging.jar"
-                        targetfile="${owlapi.jar}"/>
-              <uptodate srcfile="${owlapi.dir}/lib/owlapi-dig1_1.jar"
-                        targetfile="${owlapi.jar}"/>
-              <uptodate srcfile="${owlapi.dir}/lib/owlapi-functionalparser.jar"
-                        targetfile="${owlapi.jar}"/>
-              <uptodate srcfile="${owlapi.dir}/lib/owlapi-functionalrenderer.jar"
-                        targetfile="${owlapi.jar}"/>
-              <uptodate srcfile="${owlapi.dir}/lib/owlapi-impl.jar"
-                        targetfile="${owlapi.jar}"/>
-              <uptodate srcfile="${owlapi.dir}/lib/owlapi-krssparser.jar"
-                        targetfile="${owlapi.jar}"/>
-              <uptodate srcfile="${owlapi.dir}/lib/owlapi-mansyntaxparser.jar"
-                        targetfile="${owlapi.jar}"/>
-              <uptodate srcfile="${owlapi.dir}/lib/owlapi-mansyntaxrenderer.jar"
-                        targetfile="${owlapi.jar}"/>
-              <uptodate srcfile="${owlapi.dir}/lib/owlapi-metrics.jar"
-                        targetfile="${owlapi.jar}"/>
-              <uptodate srcfile="${owlapi.dir}/lib/owlapi-oboparser.jar"
-                        targetfile="${owlapi.jar}"/>
-              <uptodate srcfile="${owlapi.dir}/lib/owlapi-owlxmlparser.jar"
-                        targetfile="${owlapi.jar}"/>
-              <uptodate srcfile="${owlapi.dir}/lib/owlapi-owlxmlrenderer.jar"
-                        targetfile="${owlapi.jar}"/>
-              <uptodate srcfile="${owlapi.dir}/lib/owlapi-rdfapi.jar"
-                        targetfile="${owlapi.jar}"/>
-              <uptodate srcfile="${owlapi.dir}/lib/owlapi-rdfxmlparser.jar"
-                        targetfile="${owlapi.jar}"/>
-              <uptodate srcfile="${owlapi.dir}/lib/owlapi-rdfxmlrenderer.jar"
-                        targetfile="${owlapi.jar}"/>
-              <uptodate srcfile="${owlapi.dir}/lib/owlapi-util.jar"
-                        targetfile="${owlapi.jar}"/>
-          </and>
-      </condition>
-  </target>
-  
-  <target name="bundle" depends="uptodate" unless="owlapi.uptodate">
-    <unjar src = "${owlapi.dir}/lib/commons-lang-2.2.jar" 
-           dest="${owlapi.classes}"/>
-    <unjar src = "${owlapi.dir}/lib/owlapi-api.jar"
-           dest="${owlapi.classes}"/>
-    <unjar src = "${owlapi.dir}/lib/owlapi-apibinding.jar"
-           dest="${owlapi.classes}"/>
-    <unjar src = "${owlapi.dir}/lib/owlapi-change.jar"
-           dest="${owlapi.classes}"/>
-    <unjar src = "${owlapi.dir}/lib/owlapi-debugging.jar"
-           dest="${owlapi.classes}"/>
-    <unjar src = "${owlapi.dir}/lib/owlapi-dig1_1.jar"
-           dest="${owlapi.classes}"/>
-    <unjar src = "${owlapi.dir}/lib/owlapi-functionalparser.jar"
-           dest="${owlapi.classes}"/>
-    <unjar src = "${owlapi.dir}/lib/owlapi-functionalrenderer.jar"
-           dest="${owlapi.classes}"/>
-    <unjar src = "${owlapi.dir}/lib/owlapi-impl.jar"
-           dest="${owlapi.classes}"/>
-    <unjar src = "${owlapi.dir}/lib/owlapi-krssparser.jar"
-           dest="${owlapi.classes}"/>
-    <unjar src = "${owlapi.dir}/lib/owlapi-mansyntaxparser.jar"
-           dest="${owlapi.classes}"/>
-    <unjar src = "${owlapi.dir}/lib/owlapi-mansyntaxrenderer.jar"
-           dest="${owlapi.classes}"/>
-    <unjar src = "${owlapi.dir}/lib/owlapi-metrics.jar"
-           dest="${owlapi.classes}"/>
-    <unjar src = "${owlapi.dir}/lib/owlapi-oboparser.jar"
-           dest="${owlapi.classes}"/>
-    <unjar src = "${owlapi.dir}/lib/owlapi-owlxmlparser.jar"
-           dest="${owlapi.classes}"/>
-    <unjar src = "${owlapi.dir}/lib/owlapi-owlxmlrenderer.jar"
-           dest="${owlapi.classes}"/>
-    <unjar src = "${owlapi.dir}/lib/owlapi-rdfapi.jar"
-           dest="${owlapi.classes}"/>
-    <unjar src = "${owlapi.dir}/lib/owlapi-rdfxmlparser.jar"
-           dest="${owlapi.classes}"/>
-    <unjar src = "${owlapi.dir}/lib/owlapi-rdfxmlrenderer.jar"
-           dest="${owlapi.classes}"/>
-    <unjar src = "${owlapi.dir}/lib/owlapi-util.jar"
-           dest="${owlapi.classes}"/>
-    <copy todir="${owlapi.classes}/lib"
-          file="${owlapi.dir}/lib/antlr-runtime-3.0.jar"/>
+  <!--
+     = See revision 7836 for a build file that creates a jar file
+     = where the owlapi jars are flattened and can therefore function
+     = as both a java jar and an OSGi bundle. The performance
+     = impact of this change seems negligible.
+    -->
+
+  <target name="bundle">
+    <copy todir="${owlapi.classes}/lib">
+      <fileset dir="${owlapi.dir}/lib" includes="*.jar"/>
+    </copy>
     <jar basedir = "${owlapi.classes}"
          jarfile  = "${owlapi.jar}"
          manifest = "${owlapi.dir}/META-INF/MANIFEST.MF"/>
