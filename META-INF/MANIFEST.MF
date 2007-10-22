@@ -24,7 +24,7 @@ Bundle-ClassPath: .,lib/antlr-runtime-3.0.jar,
  lib/owlapi-mansyntaxrenderer.jar,
  lib/owlapi-dig1_1.jar,
  lib/owlapi-apibinding.jar
-Import-Package: org.osgi.framework
+Import-Package: org.osgi.framework, org.apache.commons.lang
 Export-Package: edu.unika.aifb.rdf.api.syntax,
  edu.unika.aifb.rdf.api.util,
  org.coode.manchesterowlsyntax,
