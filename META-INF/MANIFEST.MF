@@ -1,4 +1,4 @@
-Manifest-Version: 1.0
+-Manifest-Version: 1.0
 Bundle-Name: The OWL API
 Bundle-SymbolicName: org.semanticweb.owl.owlapi
 Bundle-DocURL: http://owlapi.sourceforge.net
@@ -37,7 +37,11 @@ Export-Package: edu.unika.aifb.rdf.api.syntax,
  org.semanticweb.owl.model,
  org.semanticweb.owl.util,
  org.semanticweb.owl.vocab,
+ org.semanticweb.owl.expression,
  uk.ac.manchester.cs.owl,
  uk.ac.manchester.cs.owl.mansyntaxrenderer,
- uk.ac.manchester.cs.owl.inference.dig11
+ uk.ac.manchester.cs.owl.inference.dig11,
+ com.clarkparsia.explanation.reasoner,
+ com.clarkparsia.explanation.util,
+ com.clarkparsia.explanation
 
