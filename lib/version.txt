@@ -1,2 +1,2 @@
-The OWL API jars correspond to revision 516 of the owlapi.  This will
+The OWL API jars correspond to revision 518 of the owlapi.  This will
 be replaced with new upcoming point release shortly (2.1.2?).
