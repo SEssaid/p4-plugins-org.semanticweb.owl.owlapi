@@ -4,6 +4,7 @@ Bundle-SymbolicName: org.semanticweb.owl.owlapi
 Bundle-DocURL: http://owlapi.sourceforge.net
 Bundle-Version: 2.1.1
 Bundle-Description: The OWL API library as a bundle
+No-Plugin-XML: true
 Bundle-ClassPath: .,lib/antlr-runtime-3.0.jar,
  lib/owlapi-bin.jar,
  lib/log4j.jar
@@ -41,7 +42,6 @@ Export-Package: edu.unika.aifb.rdf.api.syntax,
  uk.ac.manchester.cs.owl,
  uk.ac.manchester.cs.owl.mansyntaxrenderer,
  uk.ac.manchester.cs.owl.inference.dig11,
- com.clarkparsia.explanation.reasoner,
  com.clarkparsia.explanation.util,
  com.clarkparsia.explanation
 
