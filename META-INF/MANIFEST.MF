@@ -43,5 +43,9 @@ Export-Package: edu.unika.aifb.rdf.api.syntax,
  uk.ac.manchester.cs.owl.mansyntaxrenderer,
  uk.ac.manchester.cs.owl.inference.dig11,
  com.clarkparsia.explanation.util,
- com.clarkparsia.explanation
+ com.clarkparsia.explanation,
+ uk.ac.manchester.cs.bhig.util,
+ uk.ac.manchester.cs.owl.explanation.ordering,
+ uk.ac.manchester.cs.owl.explanation,
+ uk.ac.manchester.cs.owl.dlsyntax
 
