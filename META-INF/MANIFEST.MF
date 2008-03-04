@@ -3,12 +3,15 @@ Bundle-Name: The OWL API
 Bundle-SymbolicName: org.semanticweb.owl.owlapi
 Bundle-DocURL: http://owlapi.sourceforge.net
 Bundle-Version: 2.1.1
-Bundle-Description: The OWL API library as a bundle
+Bundle-Description: The OWL API library (http://sourceforge.net/projects/owlapi/) as a bundle
 No-Plugin-XML: true
 Bundle-ClassPath: .,lib/antlr-runtime-3.0.jar,
  lib/owlapi-bin.jar,
  lib/log4j.jar
-Import-Package: org.osgi.framework, org.apache.commons.lang,
+Import-Package: org.osgi.framework,
+ org.apache.log4j,
+ org.apache.log4j.spi,
+ org.apache.commons.lang,
  org.w3c.dom,
  org.w3c.dom.bootstrap,
  org.w3c.dom.events,
