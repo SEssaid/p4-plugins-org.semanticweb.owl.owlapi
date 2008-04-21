@@ -1,2 +1,1 @@
-The OWL API jars correspond to revision 638 of the trunk (Mar 27, 2008).
-This will be replaced with new upcoming point release shortly (2.1.2?).
+The OWL API jar corresponds to release 2.2.0 (17 Apr 2008)
