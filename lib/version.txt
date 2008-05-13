@@ -1,1 +1,2 @@
-The OWL API jar corresponds to release 2.2.0 (17 Apr 2008)
+The OWL API jar corresponds to revision 770 (13 May 2008)
+This is a custom build post release 2.2.0
