@@ -15,10 +15,10 @@
   <property name="src" location="${owlapi.dir}/src"/>
 
   <path id="project.classpath">
-  	<path refid="osgi.libs"/>
+      <path refid="osgi.libs"/>
         <fileset dir="${owlapi.dir}/lib"/>
   </path>
-	
+    
   <target name="init"> 
     <echo message="---------------Building OWLAPI Bundle-------------"/>
   </target>
@@ -34,17 +34,21 @@
     <copy todir="${owlapi.classes}/lib">
       <fileset dir="${owlapi.dir}/lib" includes="*.jar" excludes="${owlapi.in.jar}"/>
     </copy>
-  	<copy file="${owlapi.dir}/lib/${owlapi.in.jar}"
-  		  tofile="${owlapi.out.jar}"/>
+    <copy file="${owlapi.dir}/lib/${owlapi.in.jar}"
+          tofile="${owlapi.out.jar}"/>
     <jar basedir = "${owlapi.classes}"
          jarfile  = "${owlapi.out.jar}"
-    	 update = "true"
+         update = "true"
          manifest = "${owlapi.dir}/META-INF/MANIFEST.MF"/>
   </target> 
+
+  <target name = "junit"/>
 
   <!-- this target is to be used in the case where this is 
        not part of a bigger build                          -->
   <target name="clean">
       <delete dir="${build}"/>
   </target>
+
+
 </project>
