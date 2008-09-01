@@ -1,2 +1,2 @@
-The OWL API jar corresponds to version 2.2.1 revision 842 (21 Aug 2008)
+The OWL API jar corresponds to version 2.2.1 revision 845 (01 Sep 2008)
 This is a custom build
