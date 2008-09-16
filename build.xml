@@ -31,9 +31,7 @@
     -->
 
   <target name="bundle">
-    <copy todir="${owlapi.classes}/lib">
-      <fileset dir="${owlapi.dir}/lib" includes="*.jar" excludes="${owlapi.in.jar}"/>
-    </copy>
+    <mkdir dir="${owlapi.classes}"/>
     <copy file="${owlapi.dir}/lib/${owlapi.in.jar}"
           tofile="${owlapi.out.jar}"/>
     <jar basedir = "${owlapi.classes}"
