@@ -1,16 +1,6 @@
 <?xml version="1.0"?> 
 <project name="owlapibundle" default="bundle" basedir=".">
-
-  <!-- default values of the properties to allow this to run standalone -->
-  <!-- these values will be ignored as part of a bigger build           -->
-
-  <property name = "build"          location = "./build"/>
-  <property name = "owlapi.name"    value    = "owlapi"/>
-  <property name = "owlapi.dir"     location = "."/>
-  <property name = "owlapi.classes" location = "${build}/classes"/>
-  <property name = "owlapi.in.jar"  value = "owlapi-bin.jar"/>
-  <property name = "owlapi.out.jar" location = "${build}/dist/bundles/org.semanticweb.owl.owlapi.jar"/>
-
+  <property file="local.properties"/>
 
   <property name="src" location="${owlapi.dir}/src"/>
 
@@ -30,17 +20,18 @@
      = impact of this change seems negligible.
     -->
 
-  <target name="bundle">
-    <mkdir dir="${owlapi.classes}"/>
-    <copy file="${owlapi.dir}/lib/${owlapi.in.jar}"
-          tofile="${owlapi.out.jar}"/>
-    <jar basedir = "${owlapi.classes}"
-         jarfile  = "${owlapi.out.jar}"
-         update = "true"
-         manifest = "${owlapi.dir}/META-INF/MANIFEST.MF"/>
+  <target name="bundle" depends="init">
+    <echo message="Analyzing java bytecode to generate OSGi imports and exports"/>
+    <bnd classpath  = "${owlapi.dir}/lib/owlapi-bin.jar"
+         files      = "${owlapi.dir}/META-INF/manifest.bnd"
+         eclipse    = "false"
+         failok     = "false"
+         exceptions = "true"
+         output     = "${owlapi.jar}"/>
+    <echo message="OSGi owlapi bundle built"/>
   </target> 
 
-  <target name = "junit"/>
+  <target name = "junit" depends="init"/>
 
   <!-- this target is to be used in the case where this is 
        not part of a bigger build                          -->
