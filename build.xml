@@ -12,23 +12,34 @@
   <target name="init"> 
     <echo message="---------------Building OWLAPI Bundle-------------"/>
   </target>
+  
+  <!-- =================================================================== -->
+  <!-- BND -->
+  <!-- =================================================================== -->
 
-  <!--
-     = See revision 7836 for a build file that creates a jar file
-     = where the owlapi jars are flattened and can therefore function
-     = as both a java jar and an OSGi bundle. The performance
-     = impact of this change seems negligible.
-    -->
+  <target name = "bnd" depends = "init">
+      <taskdef resource="aQute/bnd/ant/taskdef.properties"
+               classpath="tools/bnd.jar"/> 
+      <echo message="Analyzing java bytecode to generate OSGi imports and exports"/>
+      <bnd classpath  = "${owlapi.dir}/lib/owlapi-bin.jar"
+           files      = "${owlapi.dir}/META-INF/manifest.bnd"
+           eclipse    = "false"
+           failok     = "false"
+           exceptions = "true"
+           output     = "${owlapi.jar}"/>
+      <echo message="OSGi owlapi bundle built"/>
+  </target>
 
+
+  <!-- ===================================================================================== -->
+  <!-- JAR - create the distribution JAR file that goes in the OSGi "plugins" directory -->
+  <!-- ===================================================================================== -->
   <target name="bundle" depends="init">
-    <echo message="Analyzing java bytecode to generate OSGi imports and exports"/>
-    <bnd classpath  = "${owlapi.dir}/lib/owlapi-bin.jar"
-         files      = "${owlapi.dir}/META-INF/manifest.bnd"
-         eclipse    = "false"
-         failok     = "false"
-         exceptions = "true"
-         output     = "${owlapi.jar}"/>
-    <echo message="OSGi owlapi bundle built"/>
+      <copy file="${owlapi.dir}/lib/owlapi-bin.jar"
+            tofile="${owlapi.jar}"/>
+      <jar destfile="${owlapi.jar}"
+           manifest="${owlapi.dir}/META-INF/MANIFEST.MF"
+           update="true"/>
   </target> 
 
   <target name = "junit" depends="init"/>
