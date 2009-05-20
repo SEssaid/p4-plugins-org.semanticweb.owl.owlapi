@@ -1,58 +1,45 @@
 <?xml version="1.0"?> 
-<project name="owlapibundle" default="bundle" basedir=".">
-  <property file="local.properties"/>
+<project name="owlapibundle" default="install" basedir=".">
+   <!-- To run this build file set the environment variable
+        PROTEGE_HOME to point to a protege distribution and type ant
+        install or jar.
+     -->
 
-  <property name="src" location="${owlapi.dir}/src"/>
-
-  <path id="project.classpath">
-      <path refid="osgi.libs"/>
-        <fileset dir="${owlapi.dir}/lib"/>
-  </path>
+   <property environment="env"/>
+   <property name = "protege.home"      location="${env.PROTEGE_HOME}"/>
+   
+   <property file="local.properties"/>
+   <property name="build"               location="./build"/>
+   <property name="owlapi.jar"          location="${build}/org.semanticweb.owl.owlapi.jar"/>
+   <property name = "protege.plugins"   location="${protege.home}/plugins"/>
     
-  <target name="init"> 
-    <echo message="---------------Building OWLAPI Bundle-------------"/>
-  </target>
-  
-  <!-- =================================================================== -->
-  <!-- BND -->
-  <!-- =================================================================== -->
+   <target name="init"> 
+       <echo message="---------------Building OWLAPI Bundle-------------"/>
+   </target>
+   
 
-  <target name = "bnd" depends = "init">
-      <taskdef resource="aQute/bnd/ant/taskdef.properties"
-               classpath="tools/bnd.jar"/> 
-      <echo message="Analyzing java bytecode to generate OSGi imports and exports"/>
-      <bnd classpath  = "${owlapi.dir}/lib/owlapi-bin.jar"
-           files      = "${owlapi.dir}/META-INF/manifest.bnd"
-           eclipse    = "false"
-           failok     = "false"
-           exceptions = "true"
-           output     = "${owlapi.jar}"/>
-      <echo message="OSGi owlapi bundle built"/>
-  </target>
-
-
-  <target name="copy.resources" depends="init">
-    <copy file="${owlapi.dir}/lib/owlapi-bin.jar"
-          tofile="${owlapi.jar}"/>
-  </target>
-
-  <!-- ===================================================================================== -->
-  <!-- SRC.BUNDLE - no sources to add... -->
-  <!-- ===================================================================================== -->
-  <target name="src.bundle" depends="bundle"/>
+   <target name="copy.resources" depends="init">
+       <copy file="./lib/owlapi-bin.jar"
+             tofile="${owlapi.jar}"/>
+   </target>
 
 
   <!-- ===================================================================================== -->
   <!-- BUNDLE - create the distribution JAR file that goes in the OSGi "plugins" directory -->
   <!-- ===================================================================================== -->
-  <target name="bundle" depends="init,copy.resources">
+
+  <target name="add.source"/>
+
+
+  <target name="install" depends="init,copy.resources">
       <jar destfile="${owlapi.jar}"
-           manifest="${owlapi.dir}/META-INF/MANIFEST.MF"
+           manifest="./META-INF/MANIFEST.MF"
            update="true"/>
+      <copy file="${owlapi.jar}" todir="${protege.plugins}"/>
   </target> 
 
   <target name = "junit" depends="init"/>
-
+  
   <!-- this target is to be used in the case where this is 
        not part of a bigger build                          -->
   <target name="clean">
