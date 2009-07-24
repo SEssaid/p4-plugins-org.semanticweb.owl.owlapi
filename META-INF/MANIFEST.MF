@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-Name: The OWL API
-Bundle-SymbolicName: org.semanticweb.owlapi
+Bundle-SymbolicName: org.semanticweb.owl.owlapi
 Bundle-DocURL: http://owlapi.sourceforge.net
 Bundle-Version: 3.0.0
 Bundle-Description: The OWL API library (http://sourceforge.net/projects/owlapi/) as a bundle
