@@ -13,10 +13,8 @@
    <property name="owlapi.jar"          location="${build}/org.semanticweb.owl.owlapi.jar"/>
    <property name = "protege.plugins"   location="${protege.home}/plugins"/>
     
-   <target name="init"> 
-       <echo message="---------------Building OWLAPI Bundle-------------"/>
-   </target>
-   
+
+   <target name = "init"/>
 
    <target name="copy.resources" depends="init">
        <copy file="./lib/owlapi-bin.jar"
