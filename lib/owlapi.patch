@@ -1,0 +1,235 @@
+Index: impl/src/main/java/uk/ac/manchester/cs/owl/owlapi/OWLDataFactoryImpl.java
+===================================================================
+--- impl/src/main/java/uk/ac/manchester/cs/owl/owlapi/OWLDataFactoryImpl.java	(revision 1413)
++++ impl/src/main/java/uk/ac/manchester/cs/owl/owlapi/OWLDataFactoryImpl.java	(working copy)
+@@ -1,13 +1,24 @@
+ package uk.ac.manchester.cs.owl.owlapi;
+ 
++import java.lang.ref.WeakReference;
++import java.util.Arrays;
++import java.util.Collections;
++import java.util.HashSet;
++import java.util.List;
++import java.util.Map;
++import java.util.Set;
++import java.util.WeakHashMap;
++import java.util.concurrent.ConcurrentHashMap;
++import java.util.concurrent.ConcurrentMap;
++import java.util.concurrent.locks.ReadWriteLock;
++import java.util.concurrent.locks.ReentrantReadWriteLock;
++
+ import org.semanticweb.owlapi.model.*;
+ import org.semanticweb.owlapi.util.CollectionFactory;
+ import org.semanticweb.owlapi.vocab.OWL2Datatype;
+ import org.semanticweb.owlapi.vocab.OWLFacet;
+ import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
+ import org.semanticweb.owlapi.vocab.XSDVocabulary;
+-
+-import java.util.*;
+ /*
+  * Copyright (C) 2006, University of Manchester
+  *
+@@ -21,17 +32,6 @@
+  * License as published by the Free Software Foundation; either
+  * version 2.1 of the License, or (at your option) any later version.
+ 
+- * This library is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+- * Lesser General Public License for more details.
+-
+- * You should have received a copy of the GNU Lesser General Public
+- * License along with this library; if not, write to the Free Software
+- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+- */
+-
+-
+ /**
+  * Author: Matthew Horridge<br>
+  * The University Of Manchester<br>
+@@ -46,26 +46,28 @@
+ 
+     private static OWLClass OWL_NOTHING = new OWLClassImpl(instance, OWLRDFVocabulary.OWL_NOTHING.getIRI());
+ 
+-    private Map<IRI, OWLClass> classesByURI;
++    private ReadWriteLock classesByURILock;
++    private Map<IRI, WeakReference<OWLClass>> classesByURI;
+ 
+-    private Map<IRI, OWLObjectProperty> objectPropertiesByURI;
++    private ConcurrentMap<IRI, OWLObjectProperty> objectPropertiesByURI;
+ 
+-    private Map<IRI, OWLDataProperty> dataPropertiesByURI;
++    private ConcurrentMap<IRI, OWLDataProperty> dataPropertiesByURI;
+ 
+-    private Map<IRI, OWLDatatype> datatypesByURI;
++    private ConcurrentMap<IRI, OWLDatatype> datatypesByURI;
+ 
+-    private Map<IRI, OWLNamedIndividual> individualsByURI;
++    private ConcurrentMap<IRI, OWLNamedIndividual> individualsByURI;
+ 
+-    private Map<IRI, OWLAnnotationProperty> annotationPropertiesByURI;
++    private ConcurrentMap<IRI, OWLAnnotationProperty> annotationPropertiesByURI;
+ 
+ 
+     public OWLDataFactoryImpl() {
+-        classesByURI = new WeakHashMap<IRI, OWLClass>();
+-        objectPropertiesByURI = new HashMap<IRI, OWLObjectProperty>();
+-        dataPropertiesByURI = new HashMap<IRI, OWLDataProperty>();
+-        datatypesByURI = new HashMap<IRI, OWLDatatype>();
+-        individualsByURI = new HashMap<IRI, OWLNamedIndividual>();
+-        annotationPropertiesByURI = new HashMap<IRI, OWLAnnotationProperty>();
++        classesByURILock = new ReentrantReadWriteLock();
++        classesByURI = new WeakHashMap<IRI, WeakReference<OWLClass>>();
++        objectPropertiesByURI = new ConcurrentHashMap<IRI, OWLObjectProperty>();
++        dataPropertiesByURI = new ConcurrentHashMap<IRI, OWLDataProperty>();
++        datatypesByURI = new ConcurrentHashMap<IRI, OWLDatatype>();
++        individualsByURI = new ConcurrentHashMap<IRI, OWLNamedIndividual>();
++        annotationPropertiesByURI = new ConcurrentHashMap<IRI, OWLAnnotationProperty>();
+     }
+ 
+     public static OWLDataFactory getInstance() {
+@@ -74,7 +76,13 @@
+ 
+ 
+     public void purge() {
+-        classesByURI.clear();
++        classesByURILock.writeLock().lock();
++        try {
++            classesByURI.clear();
++        }
++        finally {
++            classesByURILock.writeLock().unlock();
++        }
+         objectPropertiesByURI.clear();
+         dataPropertiesByURI.clear();
+         datatypesByURI.clear();
+@@ -113,11 +121,25 @@
+     }
+ 
+     public OWLClass getOWLClass(IRI iri) {
+-        OWLClass cls = classesByURI.get(iri);
+-        if (cls == null) {
+-            cls = new OWLClassImpl(this, iri);
+-            classesByURI.put(iri, cls);
++        classesByURILock.readLock().lock();
++        OWLClass cls;
++        WeakReference<OWLClass> ref;
++        try {
++            ref = classesByURI.get(iri);
+         }
++        finally {
++            classesByURILock.readLock().unlock();
++        }
++        if (ref == null || (cls = ref.get()) == null) {
++            classesByURILock.writeLock().lock();
++            try {
++                cls = new OWLClassImpl(this, iri);
++                classesByURI.put(iri, new WeakReference<OWLClass>(cls));
++            }
++            finally {
++                classesByURILock.writeLock().unlock();
++            }
++        }
+         return cls;
+     }
+ 
+@@ -189,30 +211,33 @@
+ 
+ 
+     public OWLObjectProperty getOWLObjectProperty(IRI iri) {
+-        OWLObjectProperty prop = objectPropertiesByURI.get(iri);
+-        if (prop == null) {
+-            prop = new OWLObjectPropertyImpl(this, iri);
+-            objectPropertiesByURI.put(iri, prop);
++        OWLObjectProperty oldProp = objectPropertiesByURI.get(iri);
++        OWLObjectProperty newProp = null;
++        if (oldProp == null) {
++            newProp = new OWLObjectPropertyImpl(this, iri);
++            oldProp = objectPropertiesByURI.putIfAbsent(iri, newProp);
+         }
+-        return prop;
++        return oldProp == null ? newProp : oldProp;
+     }
+ 
+     public OWLDataProperty getOWLDataProperty(IRI iri) {
+-        OWLDataProperty prop = dataPropertiesByURI.get(iri);
+-        if (prop == null) {
+-            prop = new OWLDataPropertyImpl(this, iri);
+-            dataPropertiesByURI.put(iri, prop);
++        OWLDataProperty oldProp = dataPropertiesByURI.get(iri);
++        OWLDataProperty newProp = null;
++        if (oldProp == null) {
++            newProp = new OWLDataPropertyImpl(this, iri);
++            oldProp = dataPropertiesByURI.putIfAbsent(iri, newProp);
+         }
+-        return prop;
++        return oldProp == null ? newProp : oldProp;
+     }
+ 
+     public OWLNamedIndividual getOWLNamedIndividual(IRI iri) {
+-        OWLNamedIndividual ind = individualsByURI.get(iri);
+-        if (ind == null) {
+-            ind = new OWLNamedIndividualImpl(this, iri);
+-            individualsByURI.put(iri, ind);
++        OWLNamedIndividual oldInd = individualsByURI.get(iri);
++        OWLNamedIndividual newInd = null;
++        if (oldInd == null) {
++            newInd = new OWLNamedIndividualImpl(this, iri);
++            oldInd = individualsByURI.putIfAbsent(iri, newInd);
+         }
+-        return ind;
++        return oldInd == null ? newInd : oldInd;
+     }
+ 
+     public OWLDataProperty getOWLDataProperty(String curi, PrefixManager prefixManager) {
+@@ -244,12 +269,13 @@
+     }
+ 
+     public OWLDatatype getOWLDatatype(IRI iri) {
+-        OWLDatatype dt = datatypesByURI.get(iri);
+-        if (dt == null) {
+-            dt = new OWLDatatypeImpl(this, iri);
+-            datatypesByURI.put(iri, dt);
++        OWLDatatype oldDt = datatypesByURI.get(iri);
++        OWLDatatype newDt = null;
++        if (oldDt == null) {
++            newDt = new OWLDatatypeImpl(this, iri);
++            oldDt = datatypesByURI.putIfAbsent(iri, newDt);
+         }
+-        return dt;
++        return oldDt == null ? newDt : oldDt;
+     }
+ 
+     public OWLTypedLiteral getOWLTypedLiteral(String literal, OWLDatatype datatype) {
+@@ -1025,12 +1051,13 @@
+ 
+ 
+     public OWLAnnotationProperty getOWLAnnotationProperty(IRI iri) {
+-        OWLAnnotationProperty prop = annotationPropertiesByURI.get(iri);
+-        if (prop == null) {
+-            prop = new OWLAnnotationPropertyImpl(this, iri);
+-            annotationPropertiesByURI.put(iri, prop);
++        OWLAnnotationProperty oldProp = annotationPropertiesByURI.get(iri);
++        OWLAnnotationProperty newProp = null;
++        if (oldProp == null) {
++            newProp = new OWLAnnotationPropertyImpl(this, iri);
++            oldProp = annotationPropertiesByURI.putIfAbsent(iri, newProp);
+         }
+-        return prop;
++        return oldProp == null ? newProp : oldProp;
+     }
+ 
+     /**
+Index: api/src/main/java/org/semanticweb/owlapi/model/IRI.java
+===================================================================
+--- api/src/main/java/org/semanticweb/owlapi/model/IRI.java	(revision 1413)
++++ api/src/main/java/org/semanticweb/owlapi/model/IRI.java	(working copy)
+@@ -200,7 +200,7 @@
+             if(colonIndex == -1) {
+                 return null;
+             }
+-            return prefix.substring(0, colonIndex - 1);
++            return prefix.substring(0, colonIndex);
+         }
+ 
+         /**
