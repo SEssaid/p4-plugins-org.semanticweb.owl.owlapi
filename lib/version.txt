@@ -1,3 +1,3 @@
 The OWL API jar corresponds to version 3 (28 Aug 2009) svn revision
-1413 with the included patch.
+1427 with the included patch.
 
