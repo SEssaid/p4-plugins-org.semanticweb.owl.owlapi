@@ -11,11 +11,14 @@
 
    <property file="local.properties"/>
    <property name="build"               location="./build"/>
+   <property name="classes"             location="${build}/classes"/>
    <property name="owlapi.jar"          location="${build}/org.semanticweb.owl.owlapi.jar"/>
    <property name = "protege.plugins"   location="${protege.home}/plugins"/>
     
 
-   <target name = "init"/>
+   <target name = "init">
+     <mkdir dir="${classes}"/>
+   </target>
 
    <target name="copy.resources" depends="init">
        <copy file="./lib/owlapi-bin.jar"
@@ -29,9 +32,16 @@
 
   <target name="add.source"/>
 
+  <target name="compile" depends="init, copy.resources">
+  	<javac srcdir="./src"
+  		   destdir="${classes}"
+  		   classpath="${owlapi.jar}"
+  	       debug="true"/>
+  </target>
 
-  <target name="install" depends="init,copy.resources">
-      <jar destfile="${owlapi.jar}"
+  <target name="install" depends="compile">
+      <jar basedir="${classes}"
+           destfile="${owlapi.jar}"
            manifest="./META-INF/MANIFEST.MF"
            update="true"/>
       <copy file="${owlapi.jar}" todir="${protege.plugins}"/>

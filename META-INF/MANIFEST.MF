@@ -110,5 +110,8 @@ Export-Package:  com.clarkparsia.owlapi.explanation,
  uk.ac.manchester.cs.owl.explanation.ordering,
  uk.ac.manchester.cs.owl.owlapi,
  uk.ac.manchester.cs.owl.owlapi.mansyntaxrenderer,
- uk.ac.manchester.cs.owl.owlapi.turtle.parser
+ uk.ac.manchester.cs.owl.owlapi.turtle.parser,
+ org.protege.owlapi.apibinding,
+ org.protege.owlapi.concurrent,
+ org.protege.owlapi.model
 
