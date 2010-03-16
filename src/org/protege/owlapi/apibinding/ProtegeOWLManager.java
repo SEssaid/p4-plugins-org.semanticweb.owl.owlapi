@@ -40,8 +40,9 @@ import de.uulm.ecs.ai.owlapi.krssrenderer.KRSS2OWLSyntaxOntologyStorer;
 public class ProtegeOWLManager {
 
     // force the static initializer
-    public OWLManager notUsed;
-
+    static {
+        OWLManager.getOWLDataFactory();
+    }
 
     /**
      * Creates an OWL ontology manager that is configured with standard parsers,
