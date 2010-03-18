@@ -3,11 +3,8 @@ package org.protege.owlapi.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.protege.owlapi.concurrent.WriteSafeOWLOntology;
-import org.protege.owlapi.concurrent.WriteSafeOWLOntologyImpl;
+import org.protege.owlapi.concurrent.WriteSafeOWLOntologyFactory;
 import org.semanticweb.owlapi.model.OWLDataFactory;
-import org.semanticweb.owlapi.model.OWLMutableOntology;
-import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyFactory;
 
 import uk.ac.manchester.cs.owl.owlapi.EmptyInMemOWLOntologyFactory;
@@ -39,16 +36,6 @@ public class ProtegeOWLOntologyManager extends OWLOntologyManagerImpl {
         return useWriteSafety;
     }
     
-    @Override
-    public void ontologyCreated(OWLOntology ontology) {
-        if (useWriteSafety 
-                && ontology instanceof OWLMutableOntology 
-                && !(ontology instanceof WriteSafeOWLOntology)) {
-            ontology = new WriteSafeOWLOntologyImpl((OWLMutableOntology) ontology);
-        }
-        super.ontologyCreated(ontology);
-    }
-    
     public void useStandardFactories() {
         clearOntologyFactories();
         addOntologyFactory(inMemoryOntologyFactory);
@@ -65,6 +52,9 @@ public class ProtegeOWLOntologyManager extends OWLOntologyManagerImpl {
 
     @Override
     public void addOntologyFactory(OWLOntologyFactory factory) {
+        if (useWriteSafety) {
+            factory = new WriteSafeOWLOntologyFactory(factory);
+        }
         super.addOntologyFactory(factory);
         ontologyFactories.add(0, factory);
     }

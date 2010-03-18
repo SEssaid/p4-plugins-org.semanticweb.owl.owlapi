@@ -95,6 +95,14 @@ public class WriteSafeOWLOntologyImpl implements OWLMutableOntology {
     public WriteLock getWriteLock() {
         return writeLock;
     }
+    
+    public boolean equals(Object o) {
+        return delegate.equals(o);
+    }
+    
+    public int hashCode() {
+        return delegate.hashCode();
+    }
 
     /* ************************************************
      * OWLMutableOntology interfaces.
