@@ -53,6 +53,11 @@ public class WriteSafeOWLOntologyFactory implements OWLOntologyFactory {
         return delegate.hashCode();
     }
     
+    @Override
+    public String toString() {
+        return delegate.toString();
+    }
+    
     
     /* **********************************************************************************************************
      * OWLOntologyFactory interfaces

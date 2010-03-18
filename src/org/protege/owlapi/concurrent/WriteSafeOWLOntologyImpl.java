@@ -103,6 +103,11 @@ public class WriteSafeOWLOntologyImpl implements OWLMutableOntology {
     public int hashCode() {
         return delegate.hashCode();
     }
+    
+    @Override
+    public String toString() {
+        return delegate.toString();
+    }
 
     /* ************************************************
      * OWLMutableOntology interfaces.
