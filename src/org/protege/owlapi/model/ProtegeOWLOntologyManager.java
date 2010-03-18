@@ -26,6 +26,11 @@ public class ProtegeOWLOntologyManager extends OWLOntologyManagerImpl {
         super(factory);
     }
     
+    /**
+     * This doesn't work yet...
+     * 
+     * @param useWriteSafety
+     */
     public void setUseWriteSafety(boolean useWriteSafety) {
         this.useWriteSafety = useWriteSafety;
     }
