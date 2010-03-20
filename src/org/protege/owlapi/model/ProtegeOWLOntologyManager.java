@@ -49,6 +49,10 @@ public class ProtegeOWLOntologyManager extends OWLOntologyManagerImpl {
     public OWLOntologyFactory getParsableOWLOntologyFactory() {
         return parsableOWLOntologyFactory;
     }
+    
+    public List<OWLOntologyFactory> getOWLOntologyFactories() {
+        return new ArrayList<OWLOntologyFactory>(ontologyFactories);
+    }
 
     @Override
     public void addOntologyFactory(OWLOntologyFactory factory) {
