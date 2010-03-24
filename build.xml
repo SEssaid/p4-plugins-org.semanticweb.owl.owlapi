@@ -14,10 +14,21 @@
    <property name="classes"             location="${build}/classes"/>
    <property name="owlapi.jar"          location="${build}/org.semanticweb.owl.owlapi.jar"/>
    <property name = "protege.plugins"   location="${protege.home}/plugins"/>
+   <property name = "manifest"          location = "${build}/manifest.mf"/>
     
+   <property name="major.version" value="1"/>
+   <property name="minor.version" value="0"/>
+   <property name="micro.version" value="0"/>
+   <property name="svn.version"   value="1446"/>
+
 
    <target name = "init">
+     <tstamp>
+       <format property="build.time" pattern="yyyy_MM_dd_hhmm"/>
+     </tstamp>
      <mkdir dir="${classes}"/>
+     <property name="bundle.version"
+               value="${major.version}.${minor.version}.${micro.version}.Svn_${svn.version}_${build.time}"/>
    </target>
 
    <target name="copy.resources" depends="init">
@@ -39,10 +50,36 @@
   	       debug="true"/>
   </target>
 
-  <target name="install" depends="compile">
+  <target name="build.manifest" depends="init">
+     <copy tofile="${manifest}" 
+           file="META-INF/MANIFEST.MF" overwrite="true"/>
+     <manifest file="${manifest}" 
+               mode = "update">
+        <attribute name="Built-By" value = "${user.name}"/>
+        <attribute name="Bundle-Version" value="${bundle.version}"/>
+     </manifest>
+  </target>
+
+   <target name = "create.update.properties">
+       <property name="update.properties.file"
+                 location="${build}/update.properties"/>
+       <echo file="${update.properties.file}" append="false">
+id=${plugin}
+version=${bundle.version}
+download=http://smi-protege.stanford.edu/protege4/plugins/4.1/${plugin}.jar
+name=OWL API Library Plugin
+readme=http://smi-protege.stanford.edu/protege4/plugins/4.1/owlapi-readme.html
+license=http://www.gnu.org/licenses/lgpl.html
+author=Matthew Horridge for the CO-ODE project
+       </echo>
+   </target>
+
+
+  <target name="install" 
+          depends="compile, build.manifest,create.update.properties">
       <jar basedir="${classes}"
            destfile="${owlapi.jar}"
-           manifest="./META-INF/MANIFEST.MF"
+           manifest="${manifest}"
            update="true"/>
       <copy file="${owlapi.jar}" todir="${protege.plugins}"/>
   </target> 
