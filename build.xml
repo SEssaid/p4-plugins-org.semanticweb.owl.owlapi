@@ -11,6 +11,7 @@
 
    <property file="local.properties"/>
    <property name="build"               location="./build"/>
+   <property name="bundle.dir"          location="${build}"/>
    <property name="classes"             location="${build}/classes"/>
    <property name="plugin"              value="org.semanticweb.owl.owlapi"/>
    <property name="owlapi.jar"          location="${build}/${plugin}.jar"/>
