@@ -70,7 +70,7 @@ public class ProtegeOWLOntologyManager extends OWLOntologyManagerImpl {
     }
     
     public void clearOntologyFactories() {
-        for (OWLOntologyFactory factory : ontologyFactories) {
+        for (OWLOntologyFactory factory : new ArrayList<OWLOntologyFactory>(ontologyFactories)) {
             removeOntologyFactory(factory);
         }
     }
