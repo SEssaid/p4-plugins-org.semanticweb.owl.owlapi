@@ -16,18 +16,12 @@ import uk.ac.manchester.cs.owl.owlapi.ParsableOWLOntologyFactory;
 public class ProtegeOWLOntologyManager extends OWLOntologyManagerImpl {
     private boolean useWriteSafety = false;
     private List<OWLOntologyFactory> ontologyFactories = new ArrayList<OWLOntologyFactory>();
-    private OWLOntologyFactory inMemoryOntologyFactory = new EmptyInMemOWLOntologyFactory();
-    private OWLOntologyFactory parsableOWLOntologyFactory = new ParsableOWLOntologyFactory();
+
     
     public ProtegeOWLOntologyManager(OWLDataFactory factory) {
         super(factory);
     }
     
-    /**
-     * This doesn't work yet...
-     * 
-     * @param useWriteSafety
-     */
     public void setUseWriteSafety(boolean useWriteSafety) {
         this.useWriteSafety = useWriteSafety;
     }
@@ -36,19 +30,6 @@ public class ProtegeOWLOntologyManager extends OWLOntologyManagerImpl {
         return useWriteSafety;
     }
     
-    public void useStandardFactories() {
-        clearOntologyFactories();
-        addOntologyFactory(inMemoryOntologyFactory);
-        addOntologyFactory(parsableOWLOntologyFactory);
-    }
-    
-    public OWLOntologyFactory getInMemoryOntologyFactory() {
-        return inMemoryOntologyFactory;
-    }
-
-    public OWLOntologyFactory getParsableOWLOntologyFactory() {
-        return parsableOWLOntologyFactory;
-    }
     
     public List<OWLOntologyFactory> getOWLOntologyFactories() {
         return new ArrayList<OWLOntologyFactory>(ontologyFactories);

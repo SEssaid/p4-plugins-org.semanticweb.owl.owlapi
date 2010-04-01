@@ -32,8 +32,11 @@ import org.protege.owlapi.concurrent.SynchronizedOWLDataFactoryImpl;
 import org.protege.owlapi.model.ProtegeOWLOntologyManager;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.OWLDataFactory;
+import org.semanticweb.owlapi.model.OWLOntologyFactory;
 import org.semanticweb.owlapi.util.NonMappingOntologyIRIMapper;
 
+import uk.ac.manchester.cs.owl.owlapi.EmptyInMemOWLOntologyFactory;
+import uk.ac.manchester.cs.owl.owlapi.ParsableOWLOntologyFactory;
 import uk.ac.manchester.cs.owl.owlapi.mansyntaxrenderer.ManchesterOWLSyntaxOntologyStorer;
 import de.uulm.ecs.ai.owlapi.krssrenderer.KRSS2OWLSyntaxOntologyStorer;
 
@@ -76,7 +79,9 @@ public class ProtegeOWLManager {
 
         ontologyManager.addIRIMapper(new NonMappingOntologyIRIMapper());
         
-        ontologyManager.useStandardFactories();
+        ontologyManager.clearOntologyFactories();
+        ontologyManager.addOntologyFactory(new EmptyInMemOWLOntologyFactory());
+        ontologyManager.addOntologyFactory(new ParsableOWLOntologyFactory());
         
         return ontologyManager;
     }
