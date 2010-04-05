@@ -32,7 +32,6 @@ import org.protege.owlapi.concurrent.SynchronizedOWLDataFactoryImpl;
 import org.protege.owlapi.model.ProtegeOWLOntologyManager;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.OWLDataFactory;
-import org.semanticweb.owlapi.model.OWLOntologyFactory;
 import org.semanticweb.owlapi.util.NonMappingOntologyIRIMapper;
 
 import uk.ac.manchester.cs.owl.owlapi.EmptyInMemOWLOntologyFactory;
