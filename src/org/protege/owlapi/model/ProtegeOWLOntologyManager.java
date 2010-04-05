@@ -37,17 +37,23 @@ public class ProtegeOWLOntologyManager extends OWLOntologyManagerImpl {
 
     @Override
     public void addOntologyFactory(OWLOntologyFactory factory) {
-        if (useWriteSafety) {
-            factory = new WriteSafeOWLOntologyFactory(factory);
-        }
+        factory = wrapFactory(factory);
         super.addOntologyFactory(factory);
         ontologyFactories.add(0, factory);
     }
     
     @Override
     public void removeOntologyFactory(OWLOntologyFactory factory) {
+        factory = wrapFactory(factory); // otherwise .equals won't work in both directions
         super.removeOntologyFactory(factory);
         ontologyFactories.remove(factory);
+    }
+    
+    private OWLOntologyFactory wrapFactory(OWLOntologyFactory factory) {
+        if (useWriteSafety && !(factory instanceof WriteSafeOWLOntologyFactory)) {
+            factory = new WriteSafeOWLOntologyFactory(factory);
+        }
+        return factory;
     }
     
     public void clearOntologyFactories() {
