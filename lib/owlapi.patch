@@ -1,0 +1,21 @@
+Index: mansyntaxparser/src/main/java/org/coode/owlapi/manchesterowlsyntax/ManchesterOWLSyntaxEditorParser.java
+===================================================================
+--- mansyntaxparser/src/main/java/org/coode/owlapi/manchesterowlsyntax/ManchesterOWLSyntaxEditorParser.java	(revision 1451)
++++ mansyntaxparser/src/main/java/org/coode/owlapi/manchesterowlsyntax/ManchesterOWLSyntaxEditorParser.java	(working copy)
+@@ -247,6 +247,7 @@
+         tokenIndex = 0;
+         for (SWRLBuiltInsVocabulary v : SWRLBuiltInsVocabulary.values()) {
+             ruleBuiltIns.put(v.getShortName(), v);
++            ruleBuiltIns.put("<" + v.getIRI().toString()  + ">", v);
+         }
+     }
+ 
+@@ -2250,7 +2251,7 @@
+ 
+         List<SWRLDArgument> args = new ArrayList<SWRLDArgument>();
+ 
+-        if (v != null) {
++        if (v != null && v.getMaxArity() >= 0) {
+             // We know the arity!
+             for (int i = 0; i < v.getMaxArity(); i++) {
+                 SWRLDArgument obj = parseDObject();
