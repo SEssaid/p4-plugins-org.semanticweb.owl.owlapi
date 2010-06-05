@@ -7,7 +7,7 @@ Bundle-Description: The OWL API library (http://sourceforge.net/projects/owlapi/
 No-Plugin-XML: true
 Bundle-ClassPath: .,
  lib/owlapi-bin.jar,
- lib/log4j.jar
+ lib/protege-owlapi-extensions.jar
 Import-Package: org.osgi.framework,
  javax.xml.parsers,
  org.w3c.dom,

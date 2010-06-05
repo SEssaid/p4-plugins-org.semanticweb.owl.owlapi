@@ -17,6 +17,8 @@
    <property name="owlapi.jar"          location="${build}/${plugin}.jar"/>
    <property name = "protege.plugins"   location="${protege.home}/plugins"/>
    <property name = "manifest"          location = "${build}/manifest.mf"/>
+   <property name = "extension.lib"     value="protege-owlapi-extensions.jar"/>
+   <property name = "jar.staging"       location="${build}/jar.contents"/>
     
    <property name="major.version" value="3"/>
    <property name="minor.version" value="0"/>
@@ -52,6 +54,11 @@
   	       debug="true"/>
   </target>
 
+  <target name="protege.extension" depends="compile">
+      <jar basedir="${classes}"
+  	       destfile="${build}/${extension.lib}"/>
+  </target>
+
   <target name="build.manifest" depends="init">
      <copy tofile="${manifest}" 
            file="META-INF/MANIFEST.MF" overwrite="true"/>
@@ -76,13 +83,18 @@ author=Matthew Horridge for the CO-ODE project
        </echo>
    </target>
 
+  <target name="jar"
+	      depends="build.manifest, protege.extension">
+  	<mkdir dir="${jar.staging}/lib"/>
+  	<copy file="${build}/${extension.lib}" todir="${jar.staging}/lib"/>
+    <jar basedir="${jar.staging}"
+  	     destfile="${owlapi.jar}"
+         manifest="${manifest}"
+         update="true"/>
+  </target>
 
   <target name="install" 
-          depends="compile, build.manifest,create.update.properties">
-      <jar basedir="${classes}"
-           destfile="${owlapi.jar}"
-           manifest="${manifest}"
-           update="true"/>
+          depends="jar,create.update.properties">
       <copy file="${owlapi.jar}" todir="${protege.plugins}"/>
   </target> 
 
