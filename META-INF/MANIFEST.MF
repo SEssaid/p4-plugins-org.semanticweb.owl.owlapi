@@ -10,6 +10,7 @@ Bundle-ClassPath: .,
  lib/protege-owlapi-extensions.jar
 Import-Package: org.osgi.framework,
  javax.xml.parsers,
+ org.apache.log4j,
  org.w3c.dom,
  org.w3c.dom.bootstrap,
  org.w3c.dom.events,
@@ -113,5 +114,7 @@ Export-Package:  com.clarkparsia.owlapi.explanation,
  uk.ac.manchester.cs.owl.owlapi.turtle.parser,
  org.protege.owlapi.apibinding,
  org.protege.owlapi.concurrent,
+ org.protege.owlapi.inference,
+ org.protege.owlapi.inference.orphan,
  org.protege.owlapi.model
 
