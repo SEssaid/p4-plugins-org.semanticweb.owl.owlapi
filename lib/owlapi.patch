@@ -1,6 +1,146 @@
+
+Property changes on: .
+___________________________________________________________________
+Added: svn:ignore
+   + .classpath
+.project
+.settings
+antbuild
+bin
+
+
+Index: impl/src/main/java/uk/ac/manchester/cs/owl/owlapi/OWLOntologyImpl.java
+===================================================================
+--- impl/src/main/java/uk/ac/manchester/cs/owl/owlapi/OWLOntologyImpl.java	(revision 1463)
++++ impl/src/main/java/uk/ac/manchester/cs/owl/owlapi/OWLOntologyImpl.java	(working copy)
+@@ -278,7 +278,7 @@
+ 
+ 
+     public <T extends OWLAxiom> Set<T> getAxioms(AxiomType<T> axiomType) {
+-        return (Set<T>) getAxioms(axiomType, axiomsByType, false);
++        return getReturnSet((Set<T>) getAxioms(axiomType, axiomsByType, false));
+     }
+ 
+     /**
+@@ -787,22 +787,22 @@
+ 
+     public Set<OWLAxiom> getReferencingAxioms(OWLEntity owlEntity) {
+         if (owlEntity instanceof OWLClass) {
+-            return getAxioms(owlEntity.asOWLClass(), owlClassReferences, false);
++            return getReturnSet(getAxioms(owlEntity.asOWLClass(), owlClassReferences, false));
+         }
+         if (owlEntity instanceof OWLObjectProperty) {
+-            return getAxioms(owlEntity.asOWLObjectProperty(), owlObjectPropertyReferences, false);
++            return getReturnSet(getAxioms(owlEntity.asOWLObjectProperty(), owlObjectPropertyReferences, false));
+         }
+         if (owlEntity instanceof OWLDataProperty) {
+-            return getAxioms(owlEntity.asOWLDataProperty(), owlDataPropertyReferences, false);
++            return getReturnSet(getAxioms(owlEntity.asOWLDataProperty(), owlDataPropertyReferences, false));
+         }
+         if (owlEntity instanceof OWLNamedIndividual) {
+-            return getAxioms(owlEntity.asOWLNamedIndividual(), owlIndividualReferences, false);
++            return getReturnSet(getAxioms(owlEntity.asOWLNamedIndividual(), owlIndividualReferences, false));
+         }
+         if (owlEntity instanceof OWLDatatype) {
+-            return getAxioms(owlEntity.asOWLDatatype(), owlDatatypeReferences, false);
++            return getReturnSet(getAxioms(owlEntity.asOWLDatatype(), owlDatatypeReferences, false));
+         }
+         if(owlEntity instanceof OWLAnnotationProperty) {
+-            return getAxioms(owlEntity.asOWLAnnotationProperty(), owlAnnotationPropertyReferences, false);
++            return getReturnSet(getAxioms(owlEntity.asOWLAnnotationProperty(), owlAnnotationPropertyReferences, false));
+         }
+         return Collections.emptySet();
+     }
+@@ -834,14 +834,14 @@
+      * @return The axioms that reference the specified anonymous individual
+      */
+     public Set<OWLAxiom> getReferencingAxioms(OWLAnonymousIndividual individual) {
+-        return getAxioms(individual, owlAnonymousIndividualReferences, false);
++        return getReturnSet(getAxioms(individual, owlAnonymousIndividualReferences, false));
+     }
+ 
+     public Set<OWLClassAxiom> getAxioms(final OWLClass cls) {
+         if (classAxiomsByClass == null) {
+             buildClassAxiomsByClassIndex();
+         }
+-        return getAxioms(cls, classAxiomsByClass);
++        return getReturnSet(getAxioms(cls, classAxiomsByClass));
+     }
+ 
+ 
+@@ -1378,7 +1378,7 @@
+         if (inverseFunctionalPropertyAxiomsByProperty == null) {
+             inverseFunctionalPropertyAxiomsByProperty = buildObjectPropertyCharacteristicsIndex(INVERSE_FUNCTIONAL_OBJECT_PROPERTY);
+         }
+-        return getAxioms(property, inverseFunctionalPropertyAxiomsByProperty);
++        return getReturnSet(getAxioms(property, inverseFunctionalPropertyAxiomsByProperty));
+     }
+ 
+ 
+@@ -1386,7 +1386,7 @@
+         if (symmetricPropertyAxiomsByProperty == null) {
+             symmetricPropertyAxiomsByProperty = buildObjectPropertyCharacteristicsIndex(SYMMETRIC_OBJECT_PROPERTY);
+         }
+-        return getAxioms(property, symmetricPropertyAxiomsByProperty);
++        return getReturnSet(getAxioms(property, symmetricPropertyAxiomsByProperty));
+     }
+ 
+ 
+@@ -1394,7 +1394,7 @@
+         if (asymmetricPropertyAxiomsByProperty == null) {
+             asymmetricPropertyAxiomsByProperty = buildObjectPropertyCharacteristicsIndex(ASYMMETRIC_OBJECT_PROPERTY);
+         }
+-        return getAxioms(property, asymmetricPropertyAxiomsByProperty);
++        return getReturnSet(getAxioms(property, asymmetricPropertyAxiomsByProperty));
+     }
+ 
+ 
+@@ -1402,7 +1402,7 @@
+         if (reflexivePropertyAxiomsByProperty == null) {
+             reflexivePropertyAxiomsByProperty = buildObjectPropertyCharacteristicsIndex(REFLEXIVE_OBJECT_PROPERTY);
+         }
+-        return getAxioms(property, reflexivePropertyAxiomsByProperty);
++        return getReturnSet(getAxioms(property, reflexivePropertyAxiomsByProperty));
+     }
+ 
+ 
+@@ -1410,7 +1410,7 @@
+         if (irreflexivePropertyAxiomsByProperty == null) {
+             irreflexivePropertyAxiomsByProperty = buildObjectPropertyCharacteristicsIndex(IRREFLEXIVE_OBJECT_PROPERTY);
+         }
+-        return getAxioms(property, irreflexivePropertyAxiomsByProperty);
++        return getReturnSet(getAxioms(property, irreflexivePropertyAxiomsByProperty));
+     }
+ 
+ 
+@@ -1418,7 +1418,7 @@
+         if (transitivePropertyAxiomsByProperty == null) {
+             transitivePropertyAxiomsByProperty = buildObjectPropertyCharacteristicsIndex(TRANSITIVE_OBJECT_PROPERTY);
+         }
+-        return getAxioms(property, transitivePropertyAxiomsByProperty);
++        return getReturnSet(getAxioms(property, transitivePropertyAxiomsByProperty));
+     }
+ 
+ 
+@@ -1430,7 +1430,7 @@
+             }
+             this.functionalDataPropertyAxiomsByProperty=functionalDataPropertyAxiomsByProperty;
+         }
+-        return getAxioms(property, functionalDataPropertyAxiomsByProperty);
++        return getReturnSet(getAxioms(property, functionalDataPropertyAxiomsByProperty));
+     }
+ 
+ 
+
+Property changes on: antbuild
+___________________________________________________________________
+Added: svn:ignore
+   + build
+
+
 Index: mansyntaxparser/src/main/java/org/coode/owlapi/manchesterowlsyntax/ManchesterOWLSyntaxEditorParser.java
 ===================================================================
---- mansyntaxparser/src/main/java/org/coode/owlapi/manchesterowlsyntax/ManchesterOWLSyntaxEditorParser.java	(revision 1451)
+--- mansyntaxparser/src/main/java/org/coode/owlapi/manchesterowlsyntax/ManchesterOWLSyntaxEditorParser.java	(revision 1463)
 +++ mansyntaxparser/src/main/java/org/coode/owlapi/manchesterowlsyntax/ManchesterOWLSyntaxEditorParser.java	(working copy)
 @@ -247,6 +247,7 @@
          tokenIndex = 0;
