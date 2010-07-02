@@ -77,12 +77,21 @@ import org.semanticweb.owlapi.model.OWLSymmetricObjectPropertyAxiom;
 import org.semanticweb.owlapi.model.OWLTransitiveObjectPropertyAxiom;
 import org.semanticweb.owlapi.model.UnknownOWLOntologyException;
 
-public class WriteSafeOWLOntologyImpl implements OWLMutableOntology {
+public class WriteSafeOWLOntologyImpl implements OWLMutableOntology, WriteSafeOWLOntology {
     private OWLMutableOntology delegate;
     private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
     private final ReadLock  readLock = lock.readLock();
     private final WriteLock writeLock = lock.writeLock();
-
+    private static int counter = 0;
+    private int lockId = allocateLockId();
+    
+    public static int allocateLockId() {
+        return counter++;
+    }
+    
+    public int getLockId() {
+        return lockId;
+    }
 
     public WriteSafeOWLOntologyImpl(OWLMutableOntology delegate) {
         this.delegate = delegate;
