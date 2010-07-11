@@ -21,6 +21,7 @@ import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLClassAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLClassAxiom;
+import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.model.OWLDataPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLDataPropertyAxiom;
@@ -989,6 +990,17 @@ public class WriteSafeOWLOntologyImpl implements OWLMutableOntology, WriteSafeOW
         }
     }
 
+    @Override
+    public Set<OWLClassExpression> getNestedClassExpressions() {
+        readLock.lock();
+        try {
+            return delegate.getNestedClassExpressions();
+        }
+        finally {
+            readLock.unlock();
+        }
+    }
+    
     public Set<OWLObjectProperty> getObjectPropertiesInSignature() {
         readLock.lock();
         try {
@@ -1218,6 +1230,16 @@ public class WriteSafeOWLOntologyImpl implements OWLMutableOntology, WriteSafeOW
             readLock.unlock();
         }
     }
+    
+    public boolean isBottomEntity() {
+        readLock.lock();
+        try {
+            return delegate.isBottomEntity();
+        }
+        finally {
+            readLock.unlock();
+        }
+    }
 
     public boolean isDeclared(OWLEntity owlEntity, boolean includeImportsClosure) {
         readLock.lock();
@@ -1243,6 +1265,17 @@ public class WriteSafeOWLOntologyImpl implements OWLMutableOntology, WriteSafeOW
         readLock.lock();
         try {
             return delegate.isEmpty();
+        }
+        finally {
+            readLock.unlock();
+        }
+    }
+    
+    @Override
+    public boolean isTopEntity() {
+        readLock.lock();
+        try {
+            return delegate.isTopEntity();
         }
         finally {
             readLock.unlock();

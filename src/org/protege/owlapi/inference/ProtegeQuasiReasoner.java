@@ -1,6 +1,7 @@
 package org.protege.owlapi.inference;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -32,6 +33,7 @@ import org.semanticweb.owlapi.reasoner.FreshEntitiesException;
 import org.semanticweb.owlapi.reasoner.FreshEntityPolicy;
 import org.semanticweb.owlapi.reasoner.InconsistentOntologyException;
 import org.semanticweb.owlapi.reasoner.IndividualNodeSetPolicy;
+import org.semanticweb.owlapi.reasoner.InferenceType;
 import org.semanticweb.owlapi.reasoner.Node;
 import org.semanticweb.owlapi.reasoner.NodeSet;
 import org.semanticweb.owlapi.reasoner.ReasonerInterruptedException;
@@ -144,17 +146,29 @@ public class ProtegeQuasiReasoner implements OWLQuasiReasoner {
     
     public void setOntologies(Set<OWLOntology> ontologies) {
         this.ontologies = ontologies;
-        prepareReasoner();
+        precomputeInferences(InferenceType.CLASS_HIERARCHY);
     }
 
+
+    public boolean isPrecomputed(InferenceType inferenceType) {
+        return true;
+    }
     
-    public void prepareReasoner() throws ReasonerInterruptedException, TimeOutException {
-        rootFinder.clear();
-        for (OWLOntology ont : ontologies) {
-            Set<OWLClass> ref = ont.getClassesInSignature();
-            rootFinder.appendTerminalElements(ref);
+    public Set<InferenceType> getPrecomputableInferenceTypes() {
+        return Collections.singleton(InferenceType.CLASS_HIERARCHY);
+    }
+    
+    public void precomputeInferences(InferenceType... inferenceTypes) throws ReasonerInterruptedException, TimeOutException, InconsistentOntologyException {
+        for  (InferenceType type : inferenceTypes) {
+            if (type == InferenceType.CLASS_HIERARCHY) {
+                rootFinder.clear();
+                for (OWLOntology ont : ontologies) {
+                    Set<OWLClass> ref = ont.getClassesInSignature();
+                    rootFinder.appendTerminalElements(ref);
+                }
+                rootFinder.finish();
+            }
         }
-        rootFinder.finish();
     }
 
 
@@ -190,7 +204,7 @@ public class ProtegeQuasiReasoner implements OWLQuasiReasoner {
     }
 
     
-    public Node<OWLObjectProperty> getBottomObjectPropertyNode() {
+    public Node<OWLObjectPropertyExpression> getBottomObjectPropertyNode() {
         return OWLObjectPropertyNode.getBottomNode();
     }
 
@@ -231,19 +245,19 @@ public class ProtegeQuasiReasoner implements OWLQuasiReasoner {
     }
 
     
-    public NodeSet<OWLClass> getDisjointClasses(OWLClassExpression ce, boolean direct) {
+    public NodeSet<OWLClass> getDisjointClasses(OWLClassExpression ce) {
         // TODO Auto-generated method stub
         return null;
     }
 
     
-    public NodeSet<OWLDataProperty> getDisjointDataProperties(OWLDataPropertyExpression pe, boolean direct) throws InconsistentOntologyException, FreshEntitiesException, ReasonerInterruptedException, TimeOutException {
+    public NodeSet<OWLDataProperty> getDisjointDataProperties(OWLDataPropertyExpression pe) throws InconsistentOntologyException, FreshEntitiesException, ReasonerInterruptedException, TimeOutException {
         // TODO Auto-generated method stub
         return null;
     }
 
     
-    public NodeSet<OWLObjectProperty> getDisjointObjectProperties(OWLObjectPropertyExpression pe, boolean direct) throws InconsistentOntologyException, FreshEntitiesException, ReasonerInterruptedException, TimeOutException {
+    public NodeSet<OWLObjectPropertyExpression> getDisjointObjectProperties(OWLObjectPropertyExpression pe) throws InconsistentOntologyException, FreshEntitiesException, ReasonerInterruptedException, TimeOutException {
         // TODO Auto-generated method stub
         return null;
     }
@@ -255,7 +269,7 @@ public class ProtegeQuasiReasoner implements OWLQuasiReasoner {
     }
 
     
-    public Node<OWLObjectProperty> getEquivalentObjectProperties(OWLObjectPropertyExpression pe) throws InconsistentOntologyException, FreshEntitiesException, ReasonerInterruptedException, TimeOutException {
+    public Node<OWLObjectPropertyExpression> getEquivalentObjectProperties(OWLObjectPropertyExpression pe) throws InconsistentOntologyException, FreshEntitiesException, ReasonerInterruptedException, TimeOutException {
         // TODO Auto-generated method stub
         return null;
     }
@@ -279,7 +293,7 @@ public class ProtegeQuasiReasoner implements OWLQuasiReasoner {
     }
 
     
-    public Node<OWLObjectProperty> getInverseObjectProperties(OWLObjectPropertyExpression pe) throws InconsistentOntologyException, FreshEntitiesException, ReasonerInterruptedException, TimeOutException {
+    public Node<OWLObjectPropertyExpression> getInverseObjectProperties(OWLObjectPropertyExpression pe) throws InconsistentOntologyException, FreshEntitiesException, ReasonerInterruptedException, TimeOutException {
         // TODO Auto-generated method stub
         return null;
     }
@@ -350,7 +364,7 @@ public class ProtegeQuasiReasoner implements OWLQuasiReasoner {
     }
 
     
-    public NodeSet<OWLObjectProperty> getSubObjectProperties(OWLObjectPropertyExpression pe, boolean direct) throws InconsistentOntologyException, FreshEntitiesException, ReasonerInterruptedException, TimeOutException {
+    public NodeSet<OWLObjectPropertyExpression> getSubObjectProperties(OWLObjectPropertyExpression pe, boolean direct) throws InconsistentOntologyException, FreshEntitiesException, ReasonerInterruptedException, TimeOutException {
         // TODO Auto-generated method stub
         return null;
     }
@@ -362,7 +376,7 @@ public class ProtegeQuasiReasoner implements OWLQuasiReasoner {
     }
 
     
-    public NodeSet<OWLObjectProperty> getSuperObjectProperties(OWLObjectPropertyExpression pe, boolean direct) throws InconsistentOntologyException, FreshEntitiesException, ReasonerInterruptedException, TimeOutException {
+    public NodeSet<OWLObjectPropertyExpression> getSuperObjectProperties(OWLObjectPropertyExpression pe, boolean direct) throws InconsistentOntologyException, FreshEntitiesException, ReasonerInterruptedException, TimeOutException {
         // TODO Auto-generated method stub
         return null;
     }
@@ -386,7 +400,7 @@ public class ProtegeQuasiReasoner implements OWLQuasiReasoner {
     }
 
     
-    public Node<OWLObjectProperty> getTopObjectPropertyNode() {
+    public Node<OWLObjectPropertyExpression> getTopObjectPropertyNode() {
         // TODO Auto-generated method stub
         return null;
     }
