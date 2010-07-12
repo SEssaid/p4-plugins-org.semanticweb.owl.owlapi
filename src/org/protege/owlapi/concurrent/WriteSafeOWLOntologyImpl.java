@@ -990,7 +990,6 @@ public class WriteSafeOWLOntologyImpl implements OWLMutableOntology, WriteSafeOW
         }
     }
 
-    @Override
     public Set<OWLClassExpression> getNestedClassExpressions() {
         readLock.lock();
         try {
@@ -1271,7 +1270,6 @@ public class WriteSafeOWLOntologyImpl implements OWLMutableOntology, WriteSafeOW
         }
     }
     
-    @Override
     public boolean isTopEntity() {
         readLock.lock();
         try {
