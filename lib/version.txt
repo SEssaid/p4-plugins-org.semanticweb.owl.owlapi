@@ -1,2 +1,2 @@
-OWLAPI version 3.0.0 (27-Jan-2010) from svn revision 1534
+OWLAPI version 3.0.0 (27-Jan-2010) from svn revision 1536
 
