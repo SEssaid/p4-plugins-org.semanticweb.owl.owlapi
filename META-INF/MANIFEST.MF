@@ -9,6 +9,7 @@ Bundle-ClassPath: .,
  lib/owlapi-bin.jar,
  lib/protege-owlapi-extensions.jar
 Import-Package: org.osgi.framework,
+ javax.swing,
  javax.xml.parsers,
  org.apache.log4j,
  org.w3c.dom,
