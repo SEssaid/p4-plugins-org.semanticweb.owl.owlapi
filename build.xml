@@ -49,25 +49,6 @@
   <!-- BUNDLE - create the distribution JAR file that goes in the OSGi "plugins" directory -->
   <!-- ===================================================================================== -->
 
-  <target name="add.source"/>
-
-  <target name="compile" depends="init, copy.resources">
-  	<javac srcdir="./src"
-  		   destdir="${classes}"
-  		   classpath="${owlapi.jar}"
-  	       debug="true">
-        <classpath>
-            <pathelement location="${owlapi.jar}"/>
-            <pathelement location="./lib/log4j.jar"/>
-        </classpath>
-    </javac>
-  </target>
-
-  <target name="protege.extension" depends="compile">
-      <jar basedir="${classes}"
-  	       destfile="${build}/${extension.lib}"/>
-  </target>
-
   <target name="build.manifest" depends="init">
      <copy tofile="${manifest}" 
            file="META-INF/MANIFEST.MF" overwrite="true"/>
@@ -93,11 +74,8 @@ author=Matthew Horridge for the CO-ODE project
    </target>
 
   <target name="jar"
-	      depends="build.manifest, protege.extension">
-  	<mkdir dir="${jar.staging}/lib"/>
-  	<copy file="${build}/${extension.lib}" todir="${jar.staging}/lib"/>
-    <jar basedir="${jar.staging}"
-  	     destfile="${owlapi.jar}"
+	      depends="build.manifest,copy.resources">
+    <jar destfile="${owlapi.jar}"
          manifest="${manifest}"
          update="true"/>
   </target>

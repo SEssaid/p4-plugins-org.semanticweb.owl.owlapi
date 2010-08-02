@@ -6,10 +6,8 @@ Bundle-Version: 3.0.0.TIsAfterSFromUploads
 Bundle-Description: The OWL API library (http://sourceforge.net/projects/owlapi/) as a bundle
 No-Plugin-XML: true
 Bundle-ClassPath: .,
- lib/owlapi-bin.jar,
- lib/protege-owlapi-extensions.jar
+ lib/owlapi-bin.jar
 Import-Package: org.osgi.framework,
- javax.swing,
  javax.xml.parsers,
  org.apache.log4j,
  org.w3c.dom,
@@ -112,10 +110,5 @@ Export-Package:  com.clarkparsia.owlapi.explanation,
  uk.ac.manchester.cs.owl.explanation.ordering,
  uk.ac.manchester.cs.owl.owlapi,
  uk.ac.manchester.cs.owl.owlapi.mansyntaxrenderer,
- uk.ac.manchester.cs.owl.owlapi.turtle.parser,
- org.protege.owlapi.apibinding,
- org.protege.owlapi.concurrent,
- org.protege.owlapi.inference,
- org.protege.owlapi.inference.orphan,
- org.protege.owlapi.model
+ uk.ac.manchester.cs.owl.owlapi.turtle.parser
 
