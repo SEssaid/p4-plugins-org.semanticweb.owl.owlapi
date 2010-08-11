@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-Bundle-Name: The OWL API (extended)
+Bundle-Name: The OWL API
 Bundle-SymbolicName: org.semanticweb.owl.owlapi
 Bundle-DocURL: http://owlapi.sourceforge.net
 Bundle-Version: 3.0.0.TIsAfterSFromUploads
