@@ -21,9 +21,9 @@
    <property name = "jar.staging"       location="${build}/jar.contents"/>
     
    <property name="major.version" value="3"/>
-   <property name="minor.version" value="0"/>
+   <property name="minor.version" value="1"/>
    <property name="micro.version" value="0"/>
-   <property name="svn.version"   value="1469_patched"/>
+   <property name="svn.version"   value="1620_3.1.0_release"/>
 
 
    <target name = "init">
