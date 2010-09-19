@@ -65,9 +65,9 @@
        <echo file="${update.properties.file}" append="false">
 id=${plugin}
 version=${bundle.version}
-download=http://smi-protege.stanford.edu/protege4/plugins/4.1/${plugin}.jar
+download=http://smi-protege.stanford.edu/protege4/plugins/4.1r/${plugin}.jar
 name=OWL API Library Plugin
-readme=http://smi-protege.stanford.edu/protege4/plugins/4.1/owlapi-readme.html
+readme=http://smi-protege.stanford.edu/protege4/plugins/4.1r/owlapi-readme.html
 license=http://www.gnu.org/licenses/lgpl.html
 author=Matthew Horridge for the CO-ODE project
        </echo>
