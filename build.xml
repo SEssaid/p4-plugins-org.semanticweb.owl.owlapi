@@ -59,20 +59,6 @@
      </manifest>
   </target>
 
-   <target name = "create.update.properties">
-       <property name="update.properties.file"
-                 location="${build}/owlapi-update.properties"/>
-       <echo file="${update.properties.file}" append="false">
-id=${plugin}
-version=${bundle.version}
-download=http://smi-protege.stanford.edu/protege4/plugins/4.1r/${plugin}.jar
-name=OWL API Library Plugin
-readme=http://smi-protege.stanford.edu/protege4/plugins/4.1r/owlapi-readme.html
-license=http://www.gnu.org/licenses/lgpl.html
-author=Matthew Horridge for the CO-ODE project
-       </echo>
-   </target>
-
   <target name="jar"
 	      depends="build.manifest,copy.resources">
     <jar destfile="${owlapi.jar}"
@@ -81,7 +67,7 @@ author=Matthew Horridge for the CO-ODE project
   </target>
 
   <target name="install" 
-          depends="jar,create.update.properties">
+          depends="jar">
       <copy file="${owlapi.jar}" todir="${protege.plugins}"/>
   </target> 
 
@@ -92,6 +78,65 @@ author=Matthew Horridge for the CO-ODE project
   <target name="clean">
       <delete dir="${build}"/>
   </target>
+
+   <!-- ===================================================================  -->
+   <!-- Distribution Support - Optional                                      -->
+   <!-- ===================================================================  -->
+
+   <!-- 
+        **** CHANGE ME ****
+
+     This entire last section will probably only need to be setup relatively 
+     late in a project. It is optional and you can delete this section
+     if desired (you can always get it from the plugin template later
+     when you need it.)  It is designed to make it easier for
+     plugin developers to configure an update.properties file for use with the
+     Protege 4 automatic update feature.   Setting up the
+     update.properties file is a tedious process and I am trying to
+     make it simpler.  There will be a wiki for this process soon when
+     the new version of the Protege update mechanism is in place. 
+
+     This first property is the svn root of this project.  The idea is
+     allow the Protege update mechanism to find the update.properties
+     and version-readme.html in the ${svn.root}/etc directory of the
+     svn repository.  So all you need to do to make these files
+     available to the Protege update process is  to commit them.
+     However, feel free to choose other locations for these files if
+     it makes sense.
+     -->
+   <property name="svn.root" value="http://smi-protege/repos/protege/protege4/plugins/org.semanticweb.owl.owlapi/trunk"/>
+
+
+   <property name="update.properties.file" value="${svn.root}/etc/update.properties"/>
+   <property name="readme.file"            value="${svn.root}/etc/owlapi-readme.html"/>
+
+   <property name="download"               value="http://smi-protege.stanford.edu/protege4/plugins/4.1r/${plugin}.jar"/>
+
+
+   <target name = "dist" depends="jar">
+       <echo file="./etc/update.properties" append="false">
+id=${plugin}
+version=${bundle.version}
+download=${download}
+name=OWL API Library Plugin
+readme=${readme.file}
+license=http://www.gnu.org/licenses/lgpl.html
+author=Matthew Horridge for the CO-ODE project
+       </echo>
+       <echo message="The build file should ensure that"/>
+       <echo message="1. The bundle version and id is correct."/>
+       <echo message="Check the following things"/>
+       <echo message="1. The main repository uses "/>
+       <echo message="      ${update.properties.file}"/>
+       <echo message="   to find this update"/>
+       <echo message="2. The update.properties can be found at "/>
+       <echo message="      ${update.properties.file}"/>
+       <echo message="3. The readme file for this update can be found at"/>
+       <echo message="      ${readme.file}"/>
+       <echo message="4. The download for this update can be found at"/>
+       <echo message="      ${download}"/>
+   </target>
+
 
 
 </project>
