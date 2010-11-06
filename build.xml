@@ -104,7 +104,7 @@
      However, feel free to choose other locations for these files if
      it makes sense.
      -->
-   <property name="svn.root" value="http://smi-protege/repos/protege/protege4/plugins/org.semanticweb.owl.owlapi/trunk"/>
+   <property name="svn.root" value="http://smi-protege.stanford.edu/repos/protege/protege4/plugins/org.semanticweb.owl.owlapi/trunk"/>
 
 
    <property name="update.properties.file" value="${svn.root}/etc/update.properties"/>
