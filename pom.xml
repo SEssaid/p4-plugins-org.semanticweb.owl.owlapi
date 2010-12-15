@@ -11,7 +11,7 @@
 	 -->
     <!-- Usually I don't like dead commented code but here this is
          something that is revived on each release -->
-    <version>3.1.0.Svn_1639_3_1_0_release_2010_12_15_1000</version>
+    <version>3.1.0.Svn_1639_3_1_0_release_2010_12_15_1039</version>
 	<!-- <version>3.1.0.213_SNAPSHOT</version> -->
     
 	<parent>
@@ -52,12 +52,11 @@
 	</scm>
 
 	<dependencies>
-        <dependency>
-            <groupId>owlapi</groupId>
-            <artifactId>owlapi</artifactId>
-            <version>3.1.0.protege-patch-01</version>
-            <type>jar</type>
-        </dependency>
+      <dependency>
+        <groupId>owlapi</groupId>
+        <artifactId>owlapi</artifactId>
+        <version>3.1.0.svn1639-patched</version>
+      </dependency>
 	</dependencies>
 
 	<description>OWL API Libraries in an OSGi Bundle for Protege</description>
