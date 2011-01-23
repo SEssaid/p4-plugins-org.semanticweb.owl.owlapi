@@ -51,12 +51,11 @@
 		<url>http://smi-protege.stanford.edu/repos/protege/protege4/plugins/org.coode.dlquery/tags/dlquery-0.0.3</url>
 	</scm>
 
-	<dependencies>
-      <dependency>
-        <groupId>owlapi</groupId>
-        <artifactId>owlapi</artifactId>
-        <version>3.1.0.svn1639-patched</version>
-      </dependency>
+        <dependency>
+          <groupId>owlapi</groupId>
+          <artifactId>owlapi</artifactId>
+          <version>3.1.0.svn1639-patched</version>
+        </dependency>
 	</dependencies>
 
 	<description>OWL API Libraries in an OSGi Bundle for Protege</description>
