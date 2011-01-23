@@ -51,6 +51,7 @@
 		<url>http://smi-protege.stanford.edu/repos/protege/protege4/plugins/org.coode.dlquery/tags/dlquery-0.0.3</url>
 	</scm>
 
+    <dependencies>
         <dependency>
           <groupId>owlapi</groupId>
           <artifactId>owlapi</artifactId>
