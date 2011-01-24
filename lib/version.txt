@@ -1,3 +1,3 @@
-Released OWLAPI version 3.1.0 (20-Aug-2010) from svn version 1639
+Released OWLAPI version 3.2.0 (14-Jan-2011) from svn version 1729
 
 Remember to update build.xml and, for major revisions, META-INF/MANIFEST.MF.
