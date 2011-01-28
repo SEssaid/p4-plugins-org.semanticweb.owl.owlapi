@@ -1,6 +1,6 @@
 Index: debugging/src/main/java/com/clarkparsia/owlapi/explanation/SingleExplanationGeneratorImpl.java
 ===================================================================
---- debugging/src/main/java/com/clarkparsia/owlapi/explanation/SingleExplanationGeneratorImpl.java	(revision 1713)
+--- debugging/src/main/java/com/clarkparsia/owlapi/explanation/SingleExplanationGeneratorImpl.java	(revision 1737)
 +++ debugging/src/main/java/com/clarkparsia/owlapi/explanation/SingleExplanationGeneratorImpl.java	(working copy)
 @@ -42,7 +42,6 @@
          this.reasonerFactory = reasonerFactory;
@@ -20,20 +20,21 @@ Index: debugging/src/main/java/com/clarkparsia/owlapi/explanation/SingleExplanat
          return definitionTracker;
      }
  
-Index: impl/src/main/java/uk/ac/manchester/cs/owl/owlapi/InitVisitorFactory.java
+Index: impl/src/main/java/uk/ac/manchester/cs/owl/owlapi/OWLOntologyImpl.java
 ===================================================================
---- impl/src/main/java/uk/ac/manchester/cs/owl/owlapi/InitVisitorFactory.java	(revision 1713)
-+++ impl/src/main/java/uk/ac/manchester/cs/owl/owlapi/InitVisitorFactory.java	(working copy)
-@@ -253,10 +253,8 @@
+--- impl/src/main/java/uk/ac/manchester/cs/owl/owlapi/OWLOntologyImpl.java	(revision 1737)
++++ impl/src/main/java/uk/ac/manchester/cs/owl/owlapi/OWLOntologyImpl.java	(working copy)
+@@ -1426,8 +1426,12 @@
+         OWLOntology other = (OWLOntology) obj;
+         return ontologyID.equals(other.getOntologyID());
+     }
++    
++    @Override
++    public int hashCode() {
++    	return ontologyID.hashCode();
++    }
  
-         @Override
-         public Collection<K> visit(OWLDisjointUnionAxiom axiom) {
--            List<OWLClassExpression> list = new ArrayList<OWLClassExpression>(axiom.getClassExpressions());
--            if (named) {
--                deleteAnonymousClasses(list);
--            }
-+            List<OWLClassExpression> list = new ArrayList<OWLClassExpression>();
-+            list.add(axiom.getOWLClass());
-             return (Collection<K>) list;
-         }
+-
+     private class OWLEntityReferenceChecker implements OWLEntityVisitor {
  
+         private boolean ref;
