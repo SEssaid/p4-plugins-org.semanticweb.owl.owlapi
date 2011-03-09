@@ -21,9 +21,9 @@
    <property name = "jar.staging"       location="${build}/jar.contents"/>
     
    <property name="major.version" value="3"/>
-   <property name="minor.version" value="2"/>
-   <property name="micro.version" value="2"/>
-   <property name="svn.version"   value="1782_3_2_2_release"/>
+   <property name="minor.version" value="1"/>
+   <property name="micro.version" value="0"/>
+   <property name="svn.version"   value="1642_patched"/>
 
 
    <target name = "init">
@@ -83,27 +83,6 @@
    <!-- Distribution Support - Optional                                      -->
    <!-- ===================================================================  -->
 
-   <!-- 
-        **** CHANGE ME ****
-
-     This entire last section will probably only need to be setup relatively 
-     late in a project. It is optional and you can delete this section
-     if desired (you can always get it from the plugin template later
-     when you need it.)  It is designed to make it easier for
-     plugin developers to configure an update.properties file for use with the
-     Protege 4 automatic update feature.   Setting up the
-     update.properties file is a tedious process and I am trying to
-     make it simpler.  There will be a wiki for this process soon when
-     the new version of the Protege update mechanism is in place. 
-
-     This first property is the svn root of this project.  The idea is
-     allow the Protege update mechanism to find the update.properties
-     and version-readme.html in the ${svn.root}/etc directory of the
-     svn repository.  So all you need to do to make these files
-     available to the Protege update process is  to commit them.
-     However, feel free to choose other locations for these files if
-     it makes sense.
-     -->
    <property name="svn.root" value="http://smi-protege.stanford.edu/repos/protege/protege4/plugins/org.semanticweb.owl.owlapi/trunk"/>
 
 
