@@ -1,3 +1,3 @@
-Released OWLAPI 3.2.2 (2011-03-11) from svn version 1789 (patched)
+Released OWLAPI 3.2.2 (2011-04-07) from svn version 1799 (patched)
 
 Remember to update build.xml and, for major revisions, META-INF/MANIFEST.MF.
