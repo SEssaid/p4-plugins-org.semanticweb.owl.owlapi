@@ -1,159 +1,3 @@
-Index: owlxml/src/main/java/org/coode/owlapi/owlxmlparser/OWLXMLParser.java
-===================================================================
---- owlxml/src/main/java/org/coode/owlapi/owlxmlparser/OWLXMLParser.java	(revision 1807)
-+++ owlxml/src/main/java/org/coode/owlapi/owlxmlparser/OWLXMLParser.java	(working copy)
-@@ -75,13 +75,14 @@
-     }
- 
-     public OWLOntologyFormat parse(OWLOntologyDocumentSource documentSource, OWLOntology ontology, OWLOntologyLoaderConfiguration configuration) throws OWLParserException, IOException, OWLOntologyChangeException, UnloadableImportException {
--        try {
-+    	InputSource isrc = null;
-+    	try {
-             System.setProperty("entityExpansionLimit", "100000000");
-             OWLXMLOntologyFormat format = new OWLXMLOntologyFormat();
-             SAXParserFactory factory = SAXParserFactory.newInstance();
-             factory.setNamespaceAware(true);
-             SAXParser parser = factory.newSAXParser();
--            InputSource isrc = getInputSource(documentSource);
-+            isrc = getInputSource(documentSource);
-             OWLXMLParserHandler handler = new OWLXMLParserHandler(ontology, configuration);
-             parser.parse(isrc, handler);
-             Map<String, String> prefix2NamespaceMap = handler.getPrefixName2PrefixMap();
-@@ -104,5 +105,13 @@
-             // General exception
-             throw new OWLParserSAXException(e);
-         }
-+        finally {
-+        	if (isrc != null && isrc.getByteStream() != null) {
-+        		isrc.getByteStream().close();
-+        	}
-+        	else if (isrc != null && isrc.getCharacterStream() != null) {
-+        		isrc.getCharacterStream().close();
-+        	}
-+        }
-     }
- }
-Index: turtle/src/main/java/uk/ac/manchester/cs/owl/owlapi/turtle/parser/TurtleOntologyParser.java
-===================================================================
---- turtle/src/main/java/uk/ac/manchester/cs/owl/owlapi/turtle/parser/TurtleOntologyParser.java	(revision 1807)
-+++ turtle/src/main/java/uk/ac/manchester/cs/owl/owlapi/turtle/parser/TurtleOntologyParser.java	(working copy)
-@@ -41,6 +41,8 @@
- 
- import java.io.BufferedInputStream;
- import java.io.IOException;
-+import java.io.InputStream;
-+import java.io.Reader;
- 
- import org.coode.owlapi.turtle.TurtleOntologyFormat;
- import org.semanticweb.owlapi.io.AbstractOWLParser;
-@@ -68,16 +70,21 @@
-     }
- 
-     public OWLOntologyFormat parse(OWLOntologyDocumentSource documentSource, OWLOntology ontology, OWLOntologyLoaderConfiguration configuration) throws OWLParserException, IOException, OWLOntologyChangeException, UnloadableImportException {
--        try {
-+        Reader reader = null;
-+        InputStream is = null;
-+    	try {
-             TurtleParser parser;
-             if(documentSource.isReaderAvailable()) {
--                parser = new TurtleParser(documentSource.getReader(), new ConsoleTripleHandler(), documentSource.getDocumentIRI().toString());
-+            	reader = documentSource.getReader();
-+                parser = new TurtleParser(reader, new ConsoleTripleHandler(), documentSource.getDocumentIRI().toString());
-             }
-             else if(documentSource.isInputStreamAvailable()) {
--                parser = new TurtleParser(documentSource.getInputStream(), new ConsoleTripleHandler(), documentSource.getDocumentIRI().toString());
-+            	is = documentSource.getInputStream();
-+                parser = new TurtleParser(is, new ConsoleTripleHandler(), documentSource.getDocumentIRI().toString());
-             }
-             else {
--                parser = new TurtleParser(new BufferedInputStream(documentSource.getDocumentIRI().toURI().toURL().openStream()), new ConsoleTripleHandler(), documentSource.getDocumentIRI().toString());
-+            	is = new BufferedInputStream(documentSource.getDocumentIRI().toURI().toURL().openStream());
-+                parser = new TurtleParser(is, new ConsoleTripleHandler(), documentSource.getDocumentIRI().toString());
-             }
- 
-             OWLRDFConsumerAdapter consumer = new OWLRDFConsumerAdapter(ontology, parser, configuration);
-@@ -97,5 +104,13 @@
-         catch (IOException e) {
-             throw new OWLParserIOException(e);
-         }
-+        finally {
-+        	if (is != null) {
-+        		is.close();
-+        	}
-+        	else if (reader != null) {
-+        		reader.close();
-+        	}
-+        }
-     }
- }
-Index: rdfxml/src/main/java/org/coode/owlapi/rdfxml/parser/RDFXMLParser.java
-===================================================================
---- rdfxml/src/main/java/org/coode/owlapi/rdfxml/parser/RDFXMLParser.java	(revision 1807)
-+++ rdfxml/src/main/java/org/coode/owlapi/rdfxml/parser/RDFXMLParser.java	(working copy)
-@@ -75,7 +75,8 @@
-     }
- 
-     public OWLOntologyFormat parse(OWLOntologyDocumentSource documentSource, OWLOntology ontology, OWLOntologyLoaderConfiguration configuration) throws OWLParserException, IOException, OWLOntologyChangeException, UnloadableImportException {
--        try {
-+    	InputSource is = null;
-+    	try {
-             final RDFXMLOntologyFormat format = new RDFXMLOntologyFormat();
-             final RDFParser parser = new RDFParser() {
-                 @Override
-@@ -114,7 +115,7 @@
-             }, configuration);
-             consumer.setIRIProvider(prov);
-             consumer.setOntologyFormat(format);
--            InputSource is = getInputSource(documentSource);
-+            is = getInputSource(documentSource);
-             parser.parse(is, consumer);
-             return format;
-         }
-@@ -127,6 +128,14 @@
-         catch (SAXException e) {
-             throw new OWLRDFXMLParserSAXException(e);
-         }
-+        finally {
-+        	if (is != null && is.getByteStream() != null) {
-+        		is.getByteStream().close();
-+        	}
-+        	else if (is != null && is.getCharacterStream() != null) {
-+        		is.getCharacterStream().close();
-+        	}
-+        }
-     }
- 
- 
-Index: rdfxml/src/main/java/org/coode/owlapi/rdfxml/parser/TypeRDFSClassHandler.java
-===================================================================
---- rdfxml/src/main/java/org/coode/owlapi/rdfxml/parser/TypeRDFSClassHandler.java	(revision 1807)
-+++ rdfxml/src/main/java/org/coode/owlapi/rdfxml/parser/TypeRDFSClassHandler.java	(working copy)
-@@ -39,7 +39,11 @@
- 
- package org.coode.owlapi.rdfxml.parser;
- 
-+import java.util.Set;
-+
- import org.semanticweb.owlapi.model.IRI;
-+import org.semanticweb.owlapi.model.OWLAnnotation;
-+import org.semanticweb.owlapi.model.OWLClass;
- import org.semanticweb.owlapi.model.UnloadableImportException;
- import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
- 
-@@ -59,7 +63,13 @@
- 
-     public void handleTriple(IRI subject, IRI predicate, IRI object) throws UnloadableImportException {
-         // TODO: Change to rdfs:Class? (See table 5 in the spec)
-+        if (!isAnonymous(subject)) {
-+            Set<OWLAnnotation> annos = getConsumer().getPendingAnnotations();
-+            OWLClass owlClass = getDataFactory().getOWLClass(subject);
-+            addAxiom(getDataFactory().getOWLDeclarationAxiom(owlClass, annos));
-+        }
-         getConsumer().addClassExpression(subject, false);
-         consumeTriple(subject, predicate, object);
-     }
-+    
- }
 Index: functional/src/main/java/org/coode/owlapi/functionalparser/OWLFunctionalSyntaxOWLParser.java
 ===================================================================
 --- functional/src/main/java/org/coode/owlapi/functionalparser/OWLFunctionalSyntaxOWLParser.java	(revision 1807)
@@ -309,4 +153,160 @@ Index: obo/src/main/java/org/coode/owlapi/obo/parser/OWLOBOParser.java
 +        }
          return new OBOOntologyFormat();
      }
+ }
+Index: owlxml/src/main/java/org/coode/owlapi/owlxmlparser/OWLXMLParser.java
+===================================================================
+--- owlxml/src/main/java/org/coode/owlapi/owlxmlparser/OWLXMLParser.java	(revision 1807)
++++ owlxml/src/main/java/org/coode/owlapi/owlxmlparser/OWLXMLParser.java	(working copy)
+@@ -75,13 +75,14 @@
+     }
+ 
+     public OWLOntologyFormat parse(OWLOntologyDocumentSource documentSource, OWLOntology ontology, OWLOntologyLoaderConfiguration configuration) throws OWLParserException, IOException, OWLOntologyChangeException, UnloadableImportException {
+-        try {
++    	InputSource isrc = null;
++    	try {
+             System.setProperty("entityExpansionLimit", "100000000");
+             OWLXMLOntologyFormat format = new OWLXMLOntologyFormat();
+             SAXParserFactory factory = SAXParserFactory.newInstance();
+             factory.setNamespaceAware(true);
+             SAXParser parser = factory.newSAXParser();
+-            InputSource isrc = getInputSource(documentSource);
++            isrc = getInputSource(documentSource);
+             OWLXMLParserHandler handler = new OWLXMLParserHandler(ontology, configuration);
+             parser.parse(isrc, handler);
+             Map<String, String> prefix2NamespaceMap = handler.getPrefixName2PrefixMap();
+@@ -104,5 +105,13 @@
+             // General exception
+             throw new OWLParserSAXException(e);
+         }
++        finally {
++        	if (isrc != null && isrc.getByteStream() != null) {
++        		isrc.getByteStream().close();
++        	}
++        	else if (isrc != null && isrc.getCharacterStream() != null) {
++        		isrc.getCharacterStream().close();
++        	}
++        }
+     }
+ }
+Index: turtle/src/main/java/uk/ac/manchester/cs/owl/owlapi/turtle/parser/TurtleOntologyParser.java
+===================================================================
+--- turtle/src/main/java/uk/ac/manchester/cs/owl/owlapi/turtle/parser/TurtleOntologyParser.java	(revision 1807)
++++ turtle/src/main/java/uk/ac/manchester/cs/owl/owlapi/turtle/parser/TurtleOntologyParser.java	(working copy)
+@@ -41,6 +41,8 @@
+ 
+ import java.io.BufferedInputStream;
+ import java.io.IOException;
++import java.io.InputStream;
++import java.io.Reader;
+ 
+ import org.coode.owlapi.turtle.TurtleOntologyFormat;
+ import org.semanticweb.owlapi.io.AbstractOWLParser;
+@@ -68,16 +70,21 @@
+     }
+ 
+     public OWLOntologyFormat parse(OWLOntologyDocumentSource documentSource, OWLOntology ontology, OWLOntologyLoaderConfiguration configuration) throws OWLParserException, IOException, OWLOntologyChangeException, UnloadableImportException {
+-        try {
++        Reader reader = null;
++        InputStream is = null;
++    	try {
+             TurtleParser parser;
+             if(documentSource.isReaderAvailable()) {
+-                parser = new TurtleParser(documentSource.getReader(), new ConsoleTripleHandler(), documentSource.getDocumentIRI().toString());
++            	reader = documentSource.getReader();
++                parser = new TurtleParser(reader, new ConsoleTripleHandler(), documentSource.getDocumentIRI().toString());
+             }
+             else if(documentSource.isInputStreamAvailable()) {
+-                parser = new TurtleParser(documentSource.getInputStream(), new ConsoleTripleHandler(), documentSource.getDocumentIRI().toString());
++            	is = documentSource.getInputStream();
++                parser = new TurtleParser(is, new ConsoleTripleHandler(), documentSource.getDocumentIRI().toString());
+             }
+             else {
+-                parser = new TurtleParser(new BufferedInputStream(documentSource.getDocumentIRI().toURI().toURL().openStream()), new ConsoleTripleHandler(), documentSource.getDocumentIRI().toString());
++            	is = new BufferedInputStream(documentSource.getDocumentIRI().toURI().toURL().openStream());
++                parser = new TurtleParser(is, new ConsoleTripleHandler(), documentSource.getDocumentIRI().toString());
+             }
+ 
+             OWLRDFConsumerAdapter consumer = new OWLRDFConsumerAdapter(ontology, parser, configuration);
+@@ -97,5 +104,13 @@
+         catch (IOException e) {
+             throw new OWLParserIOException(e);
+         }
++        finally {
++        	if (is != null) {
++        		is.close();
++        	}
++        	else if (reader != null) {
++        		reader.close();
++        	}
++        }
+     }
+ }
+Index: rdfxml/src/main/java/org/coode/owlapi/rdfxml/parser/RDFXMLParser.java
+===================================================================
+--- rdfxml/src/main/java/org/coode/owlapi/rdfxml/parser/RDFXMLParser.java	(revision 1807)
++++ rdfxml/src/main/java/org/coode/owlapi/rdfxml/parser/RDFXMLParser.java	(working copy)
+@@ -75,7 +75,8 @@
+     }
+ 
+     public OWLOntologyFormat parse(OWLOntologyDocumentSource documentSource, OWLOntology ontology, OWLOntologyLoaderConfiguration configuration) throws OWLParserException, IOException, OWLOntologyChangeException, UnloadableImportException {
+-        try {
++    	InputSource is = null;
++    	try {
+             final RDFXMLOntologyFormat format = new RDFXMLOntologyFormat();
+             final RDFParser parser = new RDFParser() {
+                 @Override
+@@ -114,7 +115,7 @@
+             }, configuration);
+             consumer.setIRIProvider(prov);
+             consumer.setOntologyFormat(format);
+-            InputSource is = getInputSource(documentSource);
++            is = getInputSource(documentSource);
+             parser.parse(is, consumer);
+             return format;
+         }
+@@ -127,6 +128,14 @@
+         catch (SAXException e) {
+             throw new OWLRDFXMLParserSAXException(e);
+         }
++        finally {
++        	if (is != null && is.getByteStream() != null) {
++        		is.getByteStream().close();
++        	}
++        	else if (is != null && is.getCharacterStream() != null) {
++        		is.getCharacterStream().close();
++        	}
++        }
+     }
+ 
+ 
+Index: rdfxml/src/main/java/org/coode/owlapi/rdfxml/parser/TypeRDFSClassHandler.java
+===================================================================
+--- rdfxml/src/main/java/org/coode/owlapi/rdfxml/parser/TypeRDFSClassHandler.java	(revision 1807)
++++ rdfxml/src/main/java/org/coode/owlapi/rdfxml/parser/TypeRDFSClassHandler.java	(working copy)
+@@ -39,7 +39,11 @@
+ 
+ package org.coode.owlapi.rdfxml.parser;
+ 
++import java.util.Set;
++
+ import org.semanticweb.owlapi.model.IRI;
++import org.semanticweb.owlapi.model.OWLAnnotation;
++import org.semanticweb.owlapi.model.OWLClass;
+ import org.semanticweb.owlapi.model.UnloadableImportException;
+ import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
+ 
+@@ -59,7 +63,13 @@
+ 
+     public void handleTriple(IRI subject, IRI predicate, IRI object) throws UnloadableImportException {
+         // TODO: Change to rdfs:Class? (See table 5 in the spec)
++        if (!getConsumer().getConfiguration().isStrict() && !isAnonymous(subject)) {
++            Set<OWLAnnotation> annos = getConsumer().getPendingAnnotations();
++            OWLClass owlClass = getDataFactory().getOWLClass(subject);
++            addAxiom(getDataFactory().getOWLDeclarationAxiom(owlClass, annos));
++        }
+         getConsumer().addClassExpression(subject, false);
+         consumeTriple(subject, predicate, object);
+     }
++    
  }
