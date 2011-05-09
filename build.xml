@@ -23,7 +23,7 @@
    <property name="major.version" value="3"/>
    <property name="minor.version" value="2"/>
    <property name="micro.version" value="2"/>
-   <property name="svn.version"   value="1799_patched"/>
+   <property name="svn.version"   value="1807_patched"/>
 
 
    <target name = "init">
