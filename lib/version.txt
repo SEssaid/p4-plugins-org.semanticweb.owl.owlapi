@@ -1,4 +1,4 @@
-OWLAPI 3.2.3 (2011-05-27) from svn version 1824 (patched)
+OWLAPI 3.2.4 (2011-11-21) from svn version 1889
 
 Remember to update build.xml (svn.version) and, for major revisions,
 META-INF/MANIFEST.MF.
