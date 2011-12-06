@@ -45,22 +45,25 @@
    </target>
 
 
-  <!-- ===================================================================================== -->
-  <!-- BUNDLE - create the distribution JAR file that goes in the OSGi "plugins" directory -->
-  <!-- ===================================================================================== -->
-
-  <target name="build.manifest" depends="init">
+   <target name="bundlor" depends="copy.resources">
+      <java classname="com.springsource.bundlor.commandline.Bundlor"
+            failonerror="true" fork="true">
+        <classpath>
+          <pathelement path="${bundlor}"/>
+        </classpath>
+        <jvmarg value="-Dbundle.version=${bundle.version}"/>
+        <jvmarg value="-Duser.name=${user.name}"/>
+        <jvmarg value="-Dplugin=${plugin}"/>
+        <arg value = "-i"/> <arg value="${owlapi.jar}"/>
+        <arg value = "-m"/> <arg value="./META-INF/manifest.bundlor"/>
+        <arg value = "-o"/> <arg value = "."/>
+      </java>
      <copy tofile="${manifest}" 
            file="META-INF/MANIFEST.MF" overwrite="true"/>
-     <manifest file="${manifest}" 
-               mode = "update">
-        <attribute name="Built-By" value = "${user.name}"/>
-        <attribute name="Bundle-Version" value="${bundle.version}"/>
-     </manifest>
-  </target>
+   </target>
 
   <target name="jar"
-	      depends="build.manifest,copy.resources">
+	      depends="copy.resources, bundlor">
     <jar destfile="${owlapi.jar}"
          manifest="${manifest}"
          update="true"/>
