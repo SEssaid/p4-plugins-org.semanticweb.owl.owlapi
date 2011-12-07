@@ -1,30 +1,27 @@
-Index: rdfxml/src/main/java/org/coode/owlapi/rdfxml/parser/TypeRDFSClassHandler.java
+Index: impl/src/main/java/uk/ac/manchester/cs/owl/owlapi/OWLLiteralImpl.java
 ===================================================================
---- rdfxml/src/main/java/org/coode/owlapi/rdfxml/parser/TypeRDFSClassHandler.java	(revision 1807)
-+++ rdfxml/src/main/java/org/coode/owlapi/rdfxml/parser/TypeRDFSClassHandler.java	(working copy)
-@@ -39,7 +39,11 @@
- 
- package org.coode.owlapi.rdfxml.parser;
- 
-+import java.util.Set;
-+
- import org.semanticweb.owlapi.model.IRI;
-+import org.semanticweb.owlapi.model.OWLAnnotation;
-+import org.semanticweb.owlapi.model.OWLClass;
- import org.semanticweb.owlapi.model.UnloadableImportException;
- import org.semanticweb.owlapi.vocab.OWLRDFVocabulary;
- 
-@@ -59,7 +63,13 @@
- 
-     public void handleTriple(IRI subject, IRI predicate, IRI object) throws UnloadableImportException {
-         // TODO: Change to rdfs:Class? (See table 5 in the spec)
-+        if (!getConsumer().getConfiguration().isStrict() && !isAnonymous(subject)) {
-+            Set<OWLAnnotation> annos = getConsumer().getPendingAnnotations();
-+            OWLClass owlClass = getDataFactory().getOWLClass(subject);
-+            addAxiom(getDataFactory().getOWLDeclarationAxiom(owlClass, annos));
-+        }
-         getConsumer().addClassExpression(subject, false);
-         consumeTriple(subject, predicate, object);
-     }
-+    
- }
+--- impl/src/main/java/uk/ac/manchester/cs/owl/owlapi/OWLLiteralImpl.java	(revision 1891)
++++ impl/src/main/java/uk/ac/manchester/cs/owl/owlapi/OWLLiteralImpl.java	(working copy)
+@@ -41,6 +41,7 @@
+ import java.io.ByteArrayInputStream;
+ import java.io.ByteArrayOutputStream;
+ import java.io.IOException;
++import java.io.InputStreamReader;
+ import java.util.Arrays;
+ import java.util.zip.GZIPInputStream;
+ import java.util.zip.GZIPOutputStream;
+@@ -119,11 +120,12 @@
+ 		String decompress(byte[] result) throws IOException {
+ 			ByteArrayInputStream in = new ByteArrayInputStream(result);
+ 			GZIPInputStream zipin = new GZIPInputStream(in);
++			InputStreamReader reader = new InputStreamReader(zipin, "UTF-8");
+ 			StringBuilder b = new StringBuilder();
+-			int c = zipin.read();
++			int c = reader.read();
+ 			while (c > -1) {
+ 				b.append((char) c);
+-				c = zipin.read();
++				c = reader.read();
+ 			}
+ 			return b.toString();
+ 		}
