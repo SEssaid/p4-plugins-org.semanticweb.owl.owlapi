@@ -26,7 +26,7 @@
    <property name="major.version" value="3"/>
    <property name="minor.version" value="2"/>
    <property name="micro.version" value="4"/>
-   <property name="svn.version"   value="1889"/>
+   <property name="svn.version"   value="1912"/>
 
 
    <target name = "init">
@@ -39,7 +39,7 @@
      </tstamp>
      <mkdir dir="${classes}"/>
      <property name="bundle.version"
-               value="${major.version}.${minor.version}.${micro.version}.Svn_${svn.version}_${build.time}"/>
+               value="${major.version}.${minor.version}.${micro.version}.${svn.version}"/>
      <condition property="use.bundlor">
        <and>
          <available file="${bundlor.home}"     type = "dir"/>
