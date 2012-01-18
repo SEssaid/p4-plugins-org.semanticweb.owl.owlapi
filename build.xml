@@ -77,6 +77,9 @@
         <arg value = "-m"/> <arg value="./META-INF/manifest.bundlor"/>
         <arg value = "-o"/> <arg value = "."/>
       </java>
+   	 <manifest file="META-INF/MANIFEST.MF" mode="update"> <!-- gross kludged hack to make eclipse happy -->
+   	 	<attribute name="Bundle-Classpath" value=".,lib/owlapi-bin.jar"/>
+   	 </manifest>
      <copy tofile="${manifest}" 
            file="META-INF/MANIFEST.MF" overwrite="true"/>
    </target>
