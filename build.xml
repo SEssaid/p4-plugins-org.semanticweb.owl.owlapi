@@ -25,8 +25,8 @@
     
    <property name="major.version" value="3"/>
    <property name="minor.version" value="2"/>
-   <property name="micro.version" value="4"/>
-   <property name="svn.version"   value="1912"/>
+   <property name="micro.version" value="5"/>
+   <property name="svn.version"   value="1928"/>
 
 
    <target name = "init">
